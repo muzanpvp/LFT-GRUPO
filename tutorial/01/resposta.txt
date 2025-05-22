@@ -1,0 +1,64 @@
+Exemplo01.py
+
+WARNING: No t_error rule is defined
+Token     Lexema    Linha     Coluna    
+PLUS      +         1         0         
+MINUS     -         1         1         
+MINUS     -         1         2         
+PLUS      +         1         3         
+PLUS      +         1         4         
+MINUS     -         1         5         
+
+
+Exception has occurred: LexError
+Illegal character ' ' at index 3
+  File "C:\Users\202000008020\Desktop\Linguagens Formais e Tradutores\LFT-GRUPO\tutorial\exemplo01.py", line 14, in <module>
+    for tok in lexer:
+ply.lex.LexError: Illegal character ' ' at index 3
+
+Resposta = Este erro foi encontrado pois não foi definido espaços em branco na entrada léxica como delimitadores, que posteriormente 
+não irão gerar tokens e serão desconsiderados nas próximas etapas.
+
+
+Exemplo02.py 
+
+WARNING: No t_error rule is defined
+Token     Lexema    Linha     Coluna    
+PLUS      +         1         0         
+MINUS     -         1         4         
+MINUS     -         1         6         
+MINUS     -         1         7         
+PLUS      +         1         8         
+PLUS      +         1         11        
+PLUS      +         1         14        
+
+Resposta = A diferença deste exemplo segundo e o primeiro é que o segundo agora possui o t_ignore que reconhece o espaço em branco
+e desconsidera ele na avaliação léxica. Dito isto, no primeiro exemplo ele ocorre o erro de "Illegal character ' ' ".
+Os valores estão corretos.
+
+
+Exemplo03.py
+
+WARNING: No t_error rule is defined
+Token     Lexema    Linha     Coluna    
+PLUS      +         1         0         
+MINUS     -         2         4         
+MINUS     -         2         6         
+MINUS     -         2         7         
+PLUS      +         2         8         
+PLUS      +         3         11        
+PLUS      +         3         14        
+
+
+
+Exemplo04.py 
+
+WARNING: No t_error rule is defined
+PLUS + 1 0
+MINUS - 1 3
+MINUS - 1 5
+MINUS - 1 6
+PLUS + 1 7
+PLUS + 1 9
+PLUS + 1 12
+ID estada 2 14
