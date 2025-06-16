@@ -45,9 +45,9 @@ Palavras utilizadas para declarar métodos, classes, módulos, macros, enums, e 
 | Palavra-Chave    | Palavra-Chave   | Palavra-Chave | Palavra-Chave |
 |------------------|-----------------|---------------|---------------|
 | `def`            | `class`         | `module`      | `struct`      |
-| `enum`           | `union`         | `macro`       | `fun`         |
-| `abstract`       | `annotation`    | `alias`       | `include`     |
-| `extend`         | `require`       | `rescue`      | `ensure`      |
+| `enum`           | `union`         | `macro`       | `abstract`    |
+| `alias`          | `include`       | `extends`     | `require`     | 
+| `rescue`         | `ensure`        |               |               |
 
 ---
 
@@ -68,7 +68,7 @@ Palavras relacionadas a tipos, operações especiais e metaprogramação.
 
 | Palavra-Chave          | Palavra-Chave           | Palavra-Chave           | Palavra-Chave         |
 |------------------------|-------------------------|-------------------------|-----------------------|
-| `as`                   | `typeof`                | `type`                  | `instance_sizeof`     |
+| `as`                   | `typeof`                | `type`                  | `sizeof`     |
 | `static_array_sizeof`  | `pointerof`             | `lib`                   | `out`                 |
 | `private`              | `protected`             |                         |                       |
 
@@ -112,3 +112,190 @@ eh_vazio?
 @idade
 @@cache_total
 $DEBUG
+
+## 2.3 Literais
+
+Literais representam valores fixos diretamente no código-fonte.
+
+### Inteiros 
+
+| Base        | Exemplos                   | Notas                                 |
+|-------------|----------------------------|----------------------------------------|
+| Decimal     | `123`, ou `1_000_000`      | Underscores são permitidos para melhorar a legibilidade |
+| Hexadecimal | `0xAF`, `0xFF`             | Prefixo `0x`                          |
+| Octal       | `0o755`, `0o123`           | Prefixo `0o`                          |
+| Binário     | `0b1010`, `0b1111_0000`    | Prefixo `0b`                          |
+| Tipagem     | `123i8`, `456u64`          | Sufixos para especificar tipo numérico |
+
+### Ponto Flutuante 
+
+| Tipo          | Exemplos                         | Notas                                 |
+|---------------|----------------------------------|----------------------------------------|
+| Decimal       | `3.14`, `-0.5`                   |                                        |
+| Científica    | `1.0e-3`, `6.022_140_76e23`      | Notação científica                    |
+| Tipagem       | `1.23f32`, `4.56f64`             | Sufixos para `Float32` ou `Float64`  |
+
+### String
+
+| Tipo         | Exemplos             | Observações                       |
+|--------------|----------------------|-----------------------------------|
+| Simples      | `"Olá, Mundo!"`      | Aspas duplas.                     |
+| Escapadas    | `"Linha 1\nLinha 2"` | Suporta sequências de quebra de linha.     |
+| Interpoladas | `"O valor é #(variavel)"` | Expressões combinadas com `#{}`. |
+| HereDocs     | `<<-TEXT\nUm texto\nTEXT` | Strings multilinha delimitadas por identificadores. |
+
+### Caracteres
+
+| Tipo         | Exemplos          | Observações                      |
+|--------------|-------------------|----------------------------------|
+| ASCII/Unicode| `'a'`, `'@'`      | Delimitadas por aspas simples.   |
+| Escape       | `'\n'`, `'\t'`, `'\u1234'` | Suporta quebras de linhas e Unicode.       |
+
+### Símbolos
+
+| Exemplos          | Observações                       |
+|-------------------|-----------------------------------|
+| `:nome`, `:"com-espaco"` | Representam nomes imutáveis únicos. |
+
+
+### Booleanos 
+
+| Exemplos          | Observações                       |
+|-------------------|-----------------------------------|
+| `true`            | `Verdadeiro`                      |
+| `false`           | `Falso`                           |
+
+
+### Nulo 
+
+- `nil` representa ausência de valor.
+
+### Arrays =
+
+- Delimitados por colchetes: `[1, "dois", 3.0]`
+
+### Hashes 
+
+| Sintaxe                  | Exemplo                                 |
+|--------------------------|------------------------------------------|
+| Símbolos como chave      | `{nome: "Alice", idade: 30}`             |
+| Strings ou valores mistos| `{"status" => "ativo"}`                 |
+
+### Faixas 
+
+| Tipo       | Exemplo       | Notas                                |
+|------------|---------------|---------------------------------------|
+| Inclusiva  | `1..5`        | Inclui o valor final (5)              |
+| Exclusiva  | `0...100`     | Exclui o valor final (100)            |
+
+
+---
+
+## 2.4 Operadores
+
+Operadores representam ações ou relações entre valores.
+
+### Operadores Aritméticos
+
+| Operador | Descrição           |
+|----------|---------------------|
+| `+`      | Soma                |
+| `-`      | Subtração           |
+| `*`      | Multiplicação       |
+| `/`      | Divisão             |
+| `%`      | Módulo (resto)      |
+| `**`     | Exponenciação       |
+
+### Operadores de Atribuição
+
+| Operador | Descrição                         |
+|----------|-----------------------------------|
+| `=`      | Atribuição direta                 |
+| `+=`     | Soma e atribui                    |
+| `-=`     | Subtrai e atribui                 |
+| `*=`     | Multiplica e atribui              |
+| `/=`     | Divide e atribui                  |
+| `%=`     | Módulo e atribui                  |
+| `**=`    | Exponenciação e atribui           |
+
+### Operadores de Comparação
+
+| Operador | Descrição                        |
+|----------|----------------------------------|
+| `==`     | Igualdade                        |
+| `!=`     | Diferença                        |
+| `<`      | Menor que                        |
+| `>`      | Maior que                        |
+| `<=`     | Menor ou igual                   |
+| `>=`     | Maior ou igual                   |
+| `===`    | Comparação de identidade         |
+
+### Operadores Lógicos Booleanos
+
+| Operador | Descrição    |
+|----------|--------------|
+| `&&`     | E lógico     |
+| `||`     | OU lógico    |
+| `!`      | Negação      |
+
+### Operadores Bit a Bit 
+
+| Operador | Descrição          |
+|----------|--------------------|
+| `&`      | AND                |
+| `|`      | OR                 |
+| `^`      | XOR                |
+| `~`      | NOT (inversão)     |
+| `<<`     | Shift à esquerda   |
+| `>>`     | Shift à direita    |
+
+### Outros Operadores
+
+| Operador | Uso                                                |
+|----------|----------------------------------------------------|
+| `.`      | Acesso a membros/métodos                           |
+| `::`     | Acesso a constantes/módulos                        |
+| `[]`     | Indexação                                          |
+| `?:`     | Operador ternário (condição ? valor1 : valor2)     |
+| `||=`    | Atribuição se nulo                                 |
+| `?.`     | Chamada segura (verifica se não é nil)             |
+| `*`      | Splat operator (Agrupar ou espalhar argumentos como array) |
+| `&`      | Capturar bloco e tratá-lo como objeto              |
+
+---
+
+## 2.5 Comentários
+
+### Linha Única
+
+```crystal
+# Este é um comentário de uma linha.
+```
+
+### Bloco/Documentação
+
+```crystal
+###
+Este é um comentário de bloco.
+Ele pode abranger várias linhas
+e serve como documentação.
+###
+```
+
+---
+
+## 2.6 Separadores e Pontuação
+
+| Símbolo   | Uso                                              |
+|-----------|--------------------------------------------------|
+| `(` `)`   | Parênteses para agrupar expressões               |
+| `[` `]`   | Colchetes para arrays ou indexação               |
+| `{` `}`   | Chaves para blocos ou hashes                     |
+| `,`       | Separação de elementos                           |
+| `;`       | Separação opcional de instruções                 |
+| `:`       | Tipagem, símbolos ou pares chave:valor           |
+| `=>`      | Hash rocket (associação chave-valor)             |
+| `|`       | Definição de parâmetros em blocos                |
+
+---
+
