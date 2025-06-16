@@ -113,6 +113,7 @@ eh_vazio?
 @@cache_total
 $DEBUG
 
+```
 ## 2.3 Literais
 
 Literais representam valores fixos diretamente no código-fonte.
