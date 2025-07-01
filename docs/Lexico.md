@@ -236,7 +236,7 @@ Operadores representam ações ou relações entre valores.
 | Operador | Descrição    |
 |----------|--------------|
 | `&&`     | E lógico     |
-| `||`     | OU lógico    |
+| `\|\|`     | OU lógico    |
 | `!`      | Negação      |
 
 ### Operadores Bit a Bit 
@@ -244,7 +244,7 @@ Operadores representam ações ou relações entre valores.
 | Operador | Descrição          |
 |----------|--------------------|
 | `&`      | AND                |
-| `|`      | OR                 |
+| `\|`      | OR                 |
 | `^`      | XOR                |
 | `~`      | NOT (inversão)     |
 | `<<`     | Shift à esquerda   |
@@ -253,12 +253,12 @@ Operadores representam ações ou relações entre valores.
 ### Outros Operadores
 
 | Operador | Uso                                                |
-|----------|----------------------------------------------------|
+|----------|---------------g------------------------------------|
 | `.`      | Acesso a membros/métodos                           |
 | `::`     | Acesso a constantes/módulos                        |
 | `[]`     | Indexação                                          |
 | `?:`     | Operador ternário (condição ? valor1 : valor2)     |
-| `||=`    | Atribuição se nulo                                 |
+| `\|\|=`    | Atribuição se nulo                                 |
 | `?.`     | Chamada segura (verifica se não é nil)             |
 | `*`      | Splat operator (Agrupar ou espalhar argumentos como array) |
 | `&`      | Capturar bloco e tratá-lo como objeto              |
@@ -296,7 +296,7 @@ e serve como documentação.
 | `;`       | Separação opcional de instruções                 |
 | `:`       | Tipagem, símbolos ou pares chave:valor           |
 | `=>`      | Hash rocket (associação chave-valor)             |
-| `|`       | Definição de parâmetros em blocos                |
+| `\|`       | Definição de parâmetros em blocos                |
 
 ---
 
