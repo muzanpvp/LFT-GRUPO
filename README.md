@@ -6,7 +6,7 @@ Esse projeto tem como objetivo o desenvolvimento de um compilador para a linguag
   <p align="center">
   <img src="https://www.python.org/static/community_logos/python-logo.png" alt="Python" width="120"/>
   &nbsp;&nbsp;&nbsp;
-  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Crystal_language_logo.svg" alt="Crystal" width="100"/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Crystal_language_logo.svg" alt="Crystal" width="120"/>
 </p>
 
 
