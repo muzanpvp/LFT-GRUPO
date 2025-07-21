@@ -20,6 +20,9 @@ Projeto desenvolvido por:
   - Vivian Silva Oliveira
 
 Orientado por:
-  - Andre Luis Meneses Silva 
+  - Andre Luis Meneses Silva
+
+Link do site com os exemplos:
+https://crystal-lang.org/#syntax
 
   
