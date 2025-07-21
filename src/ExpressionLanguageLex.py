@@ -30,14 +30,14 @@ reservadas = {
     'struct' : 'STRUCT',
     'enum' : 'ENUM', 
     'union' : 'UNION', 
-    'macro' : 'MACRO', 
+   # 'macro' : 'MACRO', 
     'abstract' : 'ABSTRACT',
     'alias' : 'ALIAS', 
     'include' : 'INCLUDE', 
-    'extends' : 'EXTENDS',
+  #  'extends' : 'EXTENDS',
     'require' : 'REQUIRE', 
-    'rescue' : 'RESCUE', 
-    'ensure' : 'ENSURE',
+   # 'rescue' : 'RESCUE', 
+ #   'ensure' : 'ENSURE',
 
     # Literais e Valores Especiais
 
@@ -45,8 +45,8 @@ reservadas = {
     'false' : 'FALSE', 
     'nil' : 'NIL',
     'uninitialized' : 'UNINITIALIZED', 
-    'self' : 'SELF', 
-    'super' : 'SUPER',
+  #  'self' : 'SELF', -> pontueiro para poo
+   # 'super' : 'SUPER', -> recurso clase pai
 
     # Tipos, Operações e Metaprogramação
 
@@ -54,8 +54,8 @@ reservadas = {
     'typeof' : 'TYPEOF', 
     'type' : 'TYPE', 
     'sizeof' : 'SIZEOF',
-    'pointerof' : 'POINTEROF', 
-    'lib' : 'LIB', 
+#    'pointerof' : 'POINTEROF', 
+  #  'lib' : 'LIB', 
     'out' : 'OUT',
     'private' : 'PRIVATE', 
     'protected' : 'PROTECTED', 
@@ -65,7 +65,7 @@ reservadas = {
 
     'begin' : 'BEGIN', 
     'end' : 'END', 
-    'asm' : 'ASM', 
+  #  'asm' : 'ASM', 
     'select' : 'SELECT',
 }
 
@@ -100,9 +100,9 @@ t_AND              = r'&&'
 t_OR               = r'\|\|'
 t_NOT              = r'!'
 #Chamada segura do método
-t_SAFE_CALL        = r'\?\.' 
-t_TERNARIO         = r'\?'
-t_DOT              = r'\.'
+# t_SAFE_CALL        = r'\?\.' 
+#t_TERNARIO         = r'\?'
+#t_DOT              = r'\.'
 t_SCOPE            = r'::'
 # Operador para passar bloco como argumento 
 t_PASSA_ARGUMENTO  = r'&'    
@@ -157,13 +157,13 @@ def t_VAR_GLOBAL(t):
     r'\$[a-zA-Z_]\w*'
     return t
 
-def t_CLASS_VAR(t):
-    r'@@[a-zA-Z_]\w*'
-    return t
+#def t_CLASS_VAR(t):
+ #   r'@@[a-zA-Z_]\w*'
+  #  return t
 
-def t_INSTANCE_VAR(t):
-    r'@[a-zA-Z_]\w*'
-    return t
+#def t_INSTANCE_VAR(t):
+ #   r'@[a-zA-Z_]\w*'
+  #  return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*[\!\?]?'
