@@ -107,7 +107,7 @@ t_SCOPE            = r'::'
 # Operador para passar bloco como argumento 
 t_PASSA_ARGUMENTO  = r'&'    
 # Definição de bloco/lambda 
-t_DEFINE_BLOCO     = r'->'     
+# t_DEFINE_BLOCO     = r'->'     
 t_LPAREN           = r'\('
 t_RPAREN           = r'\)'
 t_LBRACKET         = r'\['
