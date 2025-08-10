@@ -1,0 +1,34 @@
+GRAMMAR
+
+Rule 0     S' -> program
+Rule 1     program -> decl
+Rule 2     program -> decl program
+Rule 3     decl -> funcdecl
+Rule 4     decl -> vardecl
+Rule 5     decl -> stmt
+Rule 6     funcdecl -> DEF ID LPAREN params RPAREN body END
+Rule 7     funcdecl -> DEF ID LPAREN RPAREN body END
+Rule 8     params -> ID
+Rule 9     params -> ID COMMA params
+Rule 10    vardecl -> ID IGUAL exp
+Rule 11    vardecl -> ID COLON TYPE IGUAL exp
+Rule 12    body -> stmts
+Rule 13    stmts -> stmt
+Rule 14    stmts -> stmt stmts
+Rule 15    stmt -> exp
+Rule 16    stmt -> WHILE exp body END
+Rule 17    stmt -> IF exp body END
+Rule 18    stmt -> RETURN exp
+Rule 19    exp -> exp PLUS term
+Rule 20    exp -> exp TIMES term
+Rule 21    exp -> exp POW term
+Rule 22    exp -> term
+Rule 23    term -> NUMBER
+Rule 24    term -> STRING
+Rule 25    term -> ID
+Rule 26    term -> call
+Rule 27    term -> LPAREN exp RPAREN
+Rule 28    call -> ID LPAREN args RPAREN
+Rule 29    call -> ID LPAREN RPAREN
+Rule 30    args -> exp
+Rule 31    args -> exp COMMA args
