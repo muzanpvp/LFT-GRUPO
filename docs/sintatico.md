@@ -10,7 +10,7 @@ program->ID |assign|funcao|
       funcao program
 funcao->"def"ID""(""sigParams")" ""stm" "end"
 ``` 
-Onde os dois primeiros ID se referem, respectivamente, ao token def, utilizado para a definição de uma funçãoe o nome da função, singParams representa os argumentos da função. Por último temos stms que representam um ou mais comandos finalizados por um end. Na próxima seção será apresentado os comandos da linguagem Crystal. 
+Onde os dois primeiros ID se referem, respectivamente, ao token def, utilizado para a definição de uma função e o nome da função, singParams representa os argumentos da função. Por último temos stms que representam um ou mais comandos finalizados por um end. Na próxima seção será apresentado os comandos da linguagem Crystal. 
 
 
 
