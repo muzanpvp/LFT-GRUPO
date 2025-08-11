@@ -4,12 +4,13 @@ Documentação Sintática da linguaguem Crystal
 
 Um programa em Crystal é composto por uma ou mais funções. Uma função Crystal apresenta sintaxe similar a Ruby.
 
-'''
+
 Sem paramêtros
 '''
 def say_hello
   puts "Hello Penny!"
 end
+'''
 
 Com um paramêtros
 
