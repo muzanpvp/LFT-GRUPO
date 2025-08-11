@@ -12,6 +12,26 @@ funcao->"def"ID""(""sigParams")" ""stm" "end"
 ``` 
 Onde os dois primeiros ID se referem, respectivamente, ao token def, utilizado para a definição de uma função e o nome da função, singParams representa os argumentos da função. Por último temos stms que representam um ou mais comandos finalizados por um end. Na próxima seção será apresentado os comandos da linguagem Crystal. 
 
+1.1 Comando da Linguagem Crystal
+
+Com relação aos aceitos, Crystal lida apenas com comandos de expressôes, o comando de repetição while, for, o comando de condição if e o comando de retorn, conforme apresentado nas seguintes regras:
+
+```
+stms-> stm|stm stms
+
+opcional-> ELSIF exp "then" stms "end" | ELSE stms"end" |λ
+
+stm-> exp
+   |WHILE"("exp")"stms"end"
+   |WHILE exp stms"end"
+   |FOR ID"in"exp"do"stms"end"
+   |FOR ID"in" exp stms"end"
+   |IF exp "then"stms"end"opcional
+   |IF exp stms"end"opcional
+   |IF"("exp")""then"stms"end"opcional
+   |IF"("exp")"stms"end"opcional
+   |return exp
+```
 
 
 ```
