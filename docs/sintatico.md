@@ -32,8 +32,23 @@ stm-> exp
    |IF"("exp")"stms"end"opcional
    |return exp
 ```
+O comando while inicia com a palavra reservada while, seguido por uma expressão envolvida entre parênteses. Adicionalmente, ele apresenta obrigatoriamente uma sequência de comandos, envolvidos por chaves.
 
+O comando for inicia com a palavra reservada for, seguido por um identificador, a palavra reservada in e uma expressão. Em seguida, apresenta obrigatoriamente uma sequência de comandos, envolvidos por chaves.
 
+O comando if inicia com a palavra reservada if, seguida por uma expressão, que pode ou não estar envolvida entre parênteses, e opcionalmente precedida pela palavra reservada then. Em seguida, apresenta obrigatoriamente uma sequência de comandos, encerrada pela palavra reservada end. Opcionalmente, pode conter cláusulas elsif ou else, cada uma acompanhada de sua própria sequência de comandos e também encerrada por end.
+
+Quanto ao comando return ele inicia com a palavra reservada return, seguido por uma expressão. Ao seu final, é usado o delimitador
+
+1.2 Expressôes em Crystal
+Crystal dá suporte a expressoes aritméticas de soma, multiplicação, exponenciação, subtração, divisão e resto. Adicionalmente, também dá suporte e chamadas de função(call), atribuição de valores a variáveis(assing). Por fim, expressôes também podem ser números(NUM) e variáveis(ID). A sintaxe das expressôes Crystal é apresentada pela seguinte regra:
+
+```
+exp-> exp"+"exp|
+      exp"*"exp|
+      exp"-"exp|
+      exp"/"exp|
+      
 ```
 Sem paramêtros
 
