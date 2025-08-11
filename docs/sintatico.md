@@ -1,6 +1,6 @@
 Documentação Sintática da linguaguem Crystal
 
-1. Elementos Sintáticos.
+1. Elementos Sintáticos
 
 Um programa em Crystal é composto por uma ou mais funções. Uma função Crystal apresenta sintaxe similar a Ruby.
 O código em Crystal  começa diretamente com instruções no nível superior (top-level code), e o compilador automaticamente as executa na ordem em que aparecem.
@@ -48,8 +48,41 @@ exp-> exp"+"exp|
       exp"*"exp|
       exp"-"exp|
       exp"/"exp|
-```
+      exp"**"exp|
+      exp"%"exp|
+      exp"=="exp|
+      exp"==="exp|
+      exp"!="exp|
+      exp">"exp|
+      exp">"exp|
+      exp"<="exp|
+      exp">="exp|
+      exp"||"exp|
+      exp"&&"exp|
+      exp"!"exp|
+      call|
+      assign|
+      NUM|
+      ID|
       
+```
+
+1.2.1 Chamadas de Função e Atribuição
+
+Crystal dá suporte a chamadas de função com e sem parâmetros. Um parâmetros de função pode ser qualquer expressão Crystal. Adicionalmente, Crystal permite atribuir valores a variávais, conforme regras apresentadas a seguir:
+
+´´´
+call-> ID"("sigParams")" |
+       ID"("")"          |
+       ID                |
+       ID sigParams
+sigParams-> exp","sigParams|
+       exp
+assign->ID"="exp      
+```
+2. Exemplos de Código
+A seguir, alguns exemplos de código na Linguagem Crystal:
+
 ```
 Sem paramêtros
 
