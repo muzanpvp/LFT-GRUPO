@@ -48,6 +48,7 @@ exp-> exp"+"exp|
       exp"*"exp|
       exp"-"exp|
       exp"/"exp|
+      exp"//"exp|
       exp"**"exp|
       exp"%"exp|
       exp"=="exp|
@@ -135,7 +136,17 @@ end
 
 say_hello "World"
 say_hello 3
+
+Com valores
+
+def adds_2(n : Int32)
+  n + 2
+end
+
+puts adds_2 40
+
 ```
+
 
 
 
