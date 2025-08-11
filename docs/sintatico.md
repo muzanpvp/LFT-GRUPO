@@ -5,6 +5,13 @@ Documentação Sintática da linguaguem Crystal
 Um programa em Crystal é composto por uma ou mais funções. Uma função Crystal apresenta sintaxe similar a Ruby.
 O código em Crystal  começa diretamente com instruções no nível superior (top-level code), e o compilador automaticamente as executa na ordem em que aparecem.
 
+```
+program->ID |assign|funcao|
+      funcao program
+funcao->"def"ID""(""sigParams")" ""stm" "end"
+``` 
+
+
 
 
 ```
