@@ -1,9 +1,10 @@
 Documentação Sintática da linguaguem Crystal
 
-#1. Elementos Sintáticos.
+1. Elementos Sintáticos.
 
 Um programa em Crystal é composto por uma ou mais funções. Uma função Crystal apresenta sintaxe similar a Ruby.
-O código que você escreve em Crystal pode começar diretamente com instruções no nível superior (top-level code), e o compilador automaticamente as executa na ordem em que aparecem.
+O código em Crystal  começa diretamente com instruções no nível superior (top-level code), e o compilador automaticamente as executa na ordem em que aparecem.
+
 
 
 ```
