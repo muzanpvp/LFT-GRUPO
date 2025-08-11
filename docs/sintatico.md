@@ -32,9 +32,9 @@ stm-> exp
    |IF"("exp")"stms"end"opcional
    |return exp
 ```
-O comando while inicia com a palavra reservada while, seguido por uma expressão envolvida entre parênteses. Adicionalmente, ele apresenta obrigatoriamente uma sequência de comandos, envolvidos por chaves.
+O comando while inicia com a palavra reservada while, seguido por uma expressão envolvida entre parênteses. Adicionalmente, ele apresenta obrigatoriamente uma sequência de comandos, finalizado por end.
 
-O comando for inicia com a palavra reservada for, seguido por um identificador, a palavra reservada in e uma expressão. Em seguida, apresenta obrigatoriamente uma sequência de comandos, envolvidos por chaves.
+O comando for inicia com a palavra reservada for, seguido por um identificador, a palavra reservada in e uma expressão. Em seguida, apresenta obrigatoriamente uma sequência de comandos, finalizado por end.
 
 O comando if inicia com a palavra reservada if, seguida por uma expressão, que pode ou não estar envolvida entre parênteses, e opcionalmente precedida pela palavra reservada then. Em seguida, apresenta obrigatoriamente uma sequência de comandos, encerrada pela palavra reservada end. Opcionalmente, pode conter cláusulas elsif ou else, cada uma acompanhada de sua própria sequência de comandos e também encerrada por end.
 
