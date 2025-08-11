@@ -70,8 +70,7 @@ exp-> exp"+"exp|
 
 Crystal dá suporte a chamadas de função com e sem parâmetros. Um parâmetros de função pode ser qualquer expressão Crystal. Adicionalmente, Crystal permite atribuir valores a variávais, conforme regras apresentadas a seguir:
 
-
-´´´
+```
 call-> ID"("sigParams")" |
        ID"("")"          |
        ID                |
@@ -80,6 +79,10 @@ sigParams-> exp","sigParams|
        exp
 assign->ID"="exp      
 ```
+
+
+
+
 
 2. Exemplos de Código
 A seguir, alguns exemplos de código na Linguagem Crystal:
