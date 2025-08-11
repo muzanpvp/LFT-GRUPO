@@ -30,14 +30,12 @@ reservadas = {
     'struct' : 'STRUCT',
     'enum' : 'ENUM', 
     'union' : 'UNION', 
-   # 'macro' : 'MACRO', 
+    'macro' : 'MACRO', 
     'abstract' : 'ABSTRACT',
     'alias' : 'ALIAS', 
     'include' : 'INCLUDE', 
-  #  'extends' : 'EXTENDS',
     'require' : 'REQUIRE', 
-   # 'rescue' : 'RESCUE', 
- #   'ensure' : 'ENSURE',
+
 
     # Literais e Valores Especiais
 
@@ -45,8 +43,7 @@ reservadas = {
     'false' : 'FALSE', 
     'nil' : 'NIL',
     'uninitialized' : 'UNINITIALIZED', 
-  #  'self' : 'SELF', -> pontueiro para poo
-   # 'super' : 'SUPER', -> recurso clase pai
+  
 
     # Tipos, Operações e Metaprogramação
 
@@ -54,8 +51,6 @@ reservadas = {
     'typeof' : 'TYPEOF', 
     'type' : 'TYPE', 
     'sizeof' : 'SIZEOF',
-#    'pointerof' : 'POINTEROF', 
-  #  'lib' : 'LIB', 
     'out' : 'OUT',
     'private' : 'PRIVATE', 
     'protected' : 'PROTECTED', 
@@ -65,7 +60,6 @@ reservadas = {
 
     'begin' : 'BEGIN', 
     'end' : 'END', 
-  #  'asm' : 'ASM', 
     'select' : 'SELECT',
 }
 
@@ -156,14 +150,6 @@ def t_SYMBOL(t):
 def t_VAR_GLOBAL(t):
     r'\$[a-zA-Z_]\w*'
     return t
-
-#def t_CLASS_VAR(t):
- #   r'@@[a-zA-Z_]\w*'
-  #  return t
-
-#def t_INSTANCE_VAR(t):
- #   r'@[a-zA-Z_]\w*'
-  #  return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*[\!\?]?'
