@@ -2,4 +2,45 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    AND
+    BEGIN
+    BIGGEST
+    BIGGESTEQUAL
+    BIGSMALLERESQUAL
+    BREAK
+    CLASS
+    CLOSEKEY
+    COMMENT
+    DEDENT
+    DIFF
+    DIVIDE
+    DOUBLEBAR
+    DOUBLEE
+    DOUBLEEQUAL
+    EXCLAMATION
+    EXPONEN
+    FALSE
+    IDENT
+    LINHA
+    LSHIFT
+    MINUS
+    MODULE
+    NIL
+    NOT
+    OPENKEY
+    OR
+    PONTO
+    PONTOEVIRGULA
+    REST
+    RSHIFT
+    SELF
+    SIMPLEBAR
+    SIMPLEE
+    SMALL
+    SMALLEQUAL
+    SUPER
+    TIMES
+    TRIPLEEQUAL
+    TRUE
+
 
