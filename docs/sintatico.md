@@ -85,6 +85,7 @@ assign->ID"="exp
 
 
 2. Exemplos de Código
+   
 A seguir, alguns exemplos de código na Linguagem Crystal:
 
 
