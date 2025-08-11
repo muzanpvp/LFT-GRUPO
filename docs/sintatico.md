@@ -6,6 +6,7 @@ Um programa em Crystal é composto por uma ou mais funções. Uma função Cryst
 
 
 
+'''
 Sem paramêtros
 
 def say_hello
@@ -51,3 +52,5 @@ end
 
 say_hello "World"
 say_hello 3
+
+'''
