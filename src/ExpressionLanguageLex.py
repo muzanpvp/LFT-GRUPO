@@ -61,10 +61,23 @@ reservadas = {
     'begin' : 'BEGIN', 
     'end' : 'END', 
     'select' : 'SELECT',
+
+    #Tipos
+    'int'   :   'INT',
+    'int8'  :   'INT8',
+    'int16' :   'INT16',
+    'int32' :   'INT32',
+    'int64' :   'INT64',
+    'int128':   'INT128',
+    'float' :   'FLOAT',
+    'float32' :   'FLOAT32',
+    'float64' :   'FLOAT64',
+    'bool'  :   'BOOL'
+
 }
 
 tokens = [
-    'ID', 'FLOAT', 'INTEGER', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' 
+    'ID', 'STRING','BOOL', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' 
 ] + tuple(reservadas.values())
 
 #Não coloquei os operadores bit a bit 
@@ -113,6 +126,7 @@ t_SEMICOLON        = r';'
 t_COLON            = r':'
 #É o operador usado para definir pares chave-valor em hashes. Da para entender com o (map) do java 
 t_ASSOCIACAO       = r'=>'
+t_AT               = r'@'
 
 def t_FLOAT(t):
     r'([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?|[0-9]+[eE][-+]?[0-9]+'
