@@ -8,6 +8,7 @@ Unused terminals:
     AS
     ASSIGN
     ASSOCIACAO
+    AT
     BEGIN
     BREAK
     CASE
@@ -68,9 +69,7 @@ Unused terminals:
     SAFE_CALL
     SCOPE
     SELECT
-    SEMICOLON
     SIZEOF
-    STRING
     STRUCT
     SYMBOL
     TERNARIO
@@ -91,29 +90,36 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> opt_require opt_globals opt_classes code_functions
+Rule 1     program -> opt_require opt_globals opt_classes opt_modules opt_ code_functions opt_code
 Rule 2     opt_require -> require
 Rule 3     opt_require -> empty
 Rule 4     opt_globals -> global_declarations
 Rule 5     opt_globals -> empty
-Rule 6     opt_classes -> class_functions
+Rule 6     opt_classes -> classes_functions
 Rule 7     opt_classes -> empty
 Rule 8     empty -> <empty>
-Rule 9     require -> REQUIRE ID delimitador
-Rule 10    globals -> AT ID
-Rule 11    types -> intenger
-Rule 12    types -> float
-Rule 13    types -> boolean
-Rule 14    interger -> INT
-Rule 15    interger -> INT8
-Rule 16    interger -> INT16
-Rule 17    interger -> INT32
-Rule 18    interger -> INT64
-Rule 19    interger -> INT128
-Rule 20    float -> FLOAT
-Rule 21    float -> FLOAT32
-Rule 22    float -> FLOAT64
-Rule 23    boolean -> BOOL
+Rule 9     delimiter -> NEWLINE
+Rule 10    delimiter -> SEMICOLON
+Rule 11    delimiter -> empty
+Rule 12    require -> REQUIRE ID delimiter
+Rule 13    require -> REQUIRE STRING delimiter
+Rule 14    globals_declarations -> globals
+Rule 15    globals_declarations -> globals_declarations globals
+Rule 16    globals -> DOLAR_SIGN ID delimiter
+Rule 17    globals -> DOLAR_SIGN ID EQUALS expression delimiter
+Rule 18    types -> intenger
+Rule 19    types -> float
+Rule 20    types -> boolean
+Rule 21    interger -> INT
+Rule 22    interger -> INT8
+Rule 23    interger -> INT16
+Rule 24    interger -> INT32
+Rule 25    interger -> INT64
+Rule 26    interger -> INT128
+Rule 27    float -> FLOAT
+Rule 28    float -> FLOAT32
+Rule 29    float -> FLOAT64
+Rule 30    boolean -> BOOL
 
 Terminals, with rules where they appear
 
@@ -123,9 +129,9 @@ AND                  :
 AS                   : 
 ASSIGN               : 
 ASSOCIACAO           : 
-AT                   : 10
+AT                   : 
 BEGIN                : 
-BOOL                 : 23
+BOOL                 : 30
 BREAK                : 
 CASE                 : 
 CHAR                 : 
@@ -138,6 +144,7 @@ DEFINE_BLOCO         :
 DIVIDE               : 
 DIVIDE_ASSIGN        : 
 DO                   : 
+DOLAR_SIGN           : 16 17
 DOT                  : 
 ELSE                 : 
 ELSIF                : 
@@ -145,23 +152,23 @@ END                  :
 ENUM                 : 
 EQUAL                : 
 FALSE                : 
-FLOAT                : 20
-FLOAT32              : 21
-FLOAT64              : 22
+FLOAT                : 27
+FLOAT32              : 28
+FLOAT64              : 29
 FOR                  : 
 GREATER_EQUAL        : 
 GREATER_THAN         : 
-ID                   : 9 10
+ID                   : 12 16 17
 IF                   : 
 IN                   : 
 INCLUDE              : 
 INSTANCE_VAR         : 
-INT                  : 14
-INT128               : 19
-INT16                : 16
-INT32                : 17
-INT64                : 18
-INT8                 : 15
+INT                  : 21
+INT128               : 26
+INT16                : 23
+INT32                : 24
+INT64                : 25
+INT8                 : 22
 LBRACE               : 
 LBRACKET             : 
 LESS_EQUAL           : 
@@ -190,15 +197,15 @@ PRIVATE              :
 PROTECTED            : 
 RBRACE               : 
 RBRACKET             : 
-REQUIRE              : 9
+REQUIRE              : 12 13
 RETURN               : 
 RPAREN               : 
 SAFE_CALL            : 
 SCOPE                : 
 SELECT               : 
-SEMICOLON            : 
+SEMICOLON            : 10
 SIZEOF               : 
-STRING               : 
+STRING               : 13
 STRUCT               : 
 SYMBOL               : 
 TERNARIO             : 
@@ -219,18 +226,25 @@ error                :
 
 Nonterminals, with rules where they appear
 
-boolean              : 13
-class_functions      : 6
+EQUALS               : 17
+NEWLINE              : 9
+boolean              : 20
+classes_functions    : 6
 code_functions       : 1
-delimitador          : 9
-empty                : 3 5 7
-float                : 12
+delimiter            : 12 13 16 17
+empty                : 3 5 7 11
+expression           : 17
+float                : 19
 global_declarations  : 4
-globals              : 
-intenger             : 11
+globals              : 14 15
+globals_declarations : 15
+intenger             : 18
 interger             : 
+opt_                 : 1
 opt_classes          : 1
+opt_code             : 1
 opt_globals          : 1
+opt_modules          : 1
 opt_require          : 1
 program              : 0
 require              : 2

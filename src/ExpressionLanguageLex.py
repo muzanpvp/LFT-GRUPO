@@ -77,7 +77,7 @@ reservadas = {
 }
 
 tokens = [
-    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' , 'AT' 
+    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' , 'AT', 'DOLAR_SIGN'
 ] + list(reservadas.values())
 
 #Não coloquei os operadores bit a bit 
@@ -107,14 +107,9 @@ t_AND              = r'&&'
 t_OR               = r'\|\|'
 t_NOT              = r'!'
 #Chamada segura do método
-# t_SAFE_CALL        = r'\?\.' 
-#t_TERNARIO         = r'\?'
-#t_DOT              = r'\.'
 t_SCOPE            = r'::'
 # Operador para passar bloco como argumento 
-t_PASSA_ARGUMENTO  = r'&'    
-# Definição de bloco/lambda 
-# t_DEFINE_BLOCO     = r'->'     
+t_PASSA_ARGUMENTO  = r'&'     
 t_LPAREN           = r'\('
 t_RPAREN           = r'\)'
 t_LBRACKET         = r'\['
@@ -127,6 +122,7 @@ t_COLON            = r':'
 #É o operador usado para definir pares chave-valor em hashes. Da para entender com o (map) do java 
 t_ASSOCIACAO       = r'=>'
 t_AT               = r'@'
+t_DOLAR_SIGN       = r'\$'
 
 def t_FLOAT(t):
     r'([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?|[0-9]+[eE][-+]?[0-9]+'

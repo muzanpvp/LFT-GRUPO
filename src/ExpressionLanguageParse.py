@@ -4,7 +4,7 @@ from ExpressionLanguageLex import *
 
 
 def p_program(p):
-    '''program : opt_require opt_globals opt_classes code_functions'''
+    '''program : opt_require opt_globals opt_classes opt_modules opt_ code_functions opt_code'''
 
 def p_opt_require(p):
     '''opt_require  :   require
@@ -15,18 +15,32 @@ def p_opt_globals(p):
                     |   empty'''
 
 def p_opt_classes(p):
-    '''opt_classes  :   class_functions
+    '''opt_classes  :   classes_functions
                     |    empty'''
+
 
 def p_empty(p):
     'empty :'
     pass
 
-def p_require(p):
-    'require    :   REQUIRE ID delimitador'
+def p_delimiter(p):
+    '''delimiter    :   NEWLINE
+                    |   SEMICOLON
+                    |   empty'''
 
+def p_require(p):
+    '''require    :   REQUIRE ID delimiter
+                  |   REQUIRE STRING delimiter'''
+    
+def p_globals_declarations(p):
+    '''globals_declarations :   globals
+                            |   globals_declarations globals'''
 def p_globals(p):
-    'globals    :   AT ID'
+    '''globals  :   DOLAR_SIGN ID delimiter
+                |   DOLAR_SIGN ID EQUALS expression delimiter '''
+    
+def p_classes(p):
+    ''''''
 
 
 def p_types(p):
