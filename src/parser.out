@@ -2,45 +2,237 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    ABSTRACT
+    ALIAS
     AND
+    AS
+    ASSIGN
+    ASSOCIACAO
     BEGIN
-    BIGGEST
-    BIGGESTEQUAL
-    BIGSMALLERESQUAL
     BREAK
+    CASE
+    CHAR
     CLASS
-    CLOSEKEY
-    COMMENT
-    DEDENT
-    DIFF
+    CLASS_VAR
+    COLON
+    COMMA
+    DEF
+    DEFINE_BLOCO
     DIVIDE
-    DOUBLEBAR
-    DOUBLEE
-    DOUBLEEQUAL
-    EXCLAMATION
-    EXPONEN
+    DIVIDE_ASSIGN
+    DO
+    DOT
+    ELSE
+    ELSIF
+    END
+    ENUM
+    EQUAL
     FALSE
-    IDENT
-    LINHA
-    LSHIFT
+    FOR
+    GREATER_EQUAL
+    GREATER_THAN
+    IF
+    IN
+    INCLUDE
+    INSTANCE_VAR
+    LBRACE
+    LBRACKET
+    LESS_EQUAL
+    LESS_THAN
+    LPAREN
+    MACRO
     MINUS
+    MINUS_ASSIGN
     MODULE
+    MODULO
+    MODULO_ASSIGN
+    MULTI
+    MULTI_ASSIGN
+    NEXT
     NIL
     NOT
-    OPENKEY
+    NOT_EQUAL
+    OF
     OR
-    PONTO
-    PONTOEVIRGULA
-    REST
-    RSHIFT
-    SELF
-    SIMPLEBAR
-    SIMPLEE
-    SMALL
-    SMALLEQUAL
-    SUPER
-    TIMES
-    TRIPLEEQUAL
+    OUT
+    PASSA_ARGUMENTO
+    PLUS
+    PLUS_ASSIGN
+    POTENCIACAO
+    PRIVATE
+    PROTECTED
+    RBRACE
+    RBRACKET
+    RETURN
+    RPAREN
+    SAFE_CALL
+    SCOPE
+    SELECT
+    SEMICOLON
+    SIZEOF
+    STRING
+    STRUCT
+    SYMBOL
+    TERNARIO
+    THEN
+    TIPO_EQUAL
     TRUE
+    TYPE
+    TYPEOF
+    UNINITIALIZED
+    UNION
+    UNLESS
+    UNTIL
+    VAR_GLOBAL
+    WHEN
+    WHILE
+    YIELD
 
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> opt_require opt_globals opt_classes code_functions
+Rule 2     opt_require -> require
+Rule 3     opt_require -> empty
+Rule 4     opt_globals -> global_declarations
+Rule 5     opt_globals -> empty
+Rule 6     opt_classes -> class_functions
+Rule 7     opt_classes -> empty
+Rule 8     empty -> <empty>
+Rule 9     require -> REQUIRE ID delimitador
+Rule 10    globals -> AT ID
+Rule 11    types -> intenger
+Rule 12    types -> float
+Rule 13    types -> boolean
+Rule 14    interger -> INT
+Rule 15    interger -> INT8
+Rule 16    interger -> INT16
+Rule 17    interger -> INT32
+Rule 18    interger -> INT64
+Rule 19    interger -> INT128
+Rule 20    float -> FLOAT
+Rule 21    float -> FLOAT32
+Rule 22    float -> FLOAT64
+Rule 23    boolean -> BOOL
+
+Terminals, with rules where they appear
+
+ABSTRACT             : 
+ALIAS                : 
+AND                  : 
+AS                   : 
+ASSIGN               : 
+ASSOCIACAO           : 
+AT                   : 10
+BEGIN                : 
+BOOL                 : 23
+BREAK                : 
+CASE                 : 
+CHAR                 : 
+CLASS                : 
+CLASS_VAR            : 
+COLON                : 
+COMMA                : 
+DEF                  : 
+DEFINE_BLOCO         : 
+DIVIDE               : 
+DIVIDE_ASSIGN        : 
+DO                   : 
+DOT                  : 
+ELSE                 : 
+ELSIF                : 
+END                  : 
+ENUM                 : 
+EQUAL                : 
+FALSE                : 
+FLOAT                : 20
+FLOAT32              : 21
+FLOAT64              : 22
+FOR                  : 
+GREATER_EQUAL        : 
+GREATER_THAN         : 
+ID                   : 9 10
+IF                   : 
+IN                   : 
+INCLUDE              : 
+INSTANCE_VAR         : 
+INT                  : 14
+INT128               : 19
+INT16                : 16
+INT32                : 17
+INT64                : 18
+INT8                 : 15
+LBRACE               : 
+LBRACKET             : 
+LESS_EQUAL           : 
+LESS_THAN            : 
+LPAREN               : 
+MACRO                : 
+MINUS                : 
+MINUS_ASSIGN         : 
+MODULE               : 
+MODULO               : 
+MODULO_ASSIGN        : 
+MULTI                : 
+MULTI_ASSIGN         : 
+NEXT                 : 
+NIL                  : 
+NOT                  : 
+NOT_EQUAL            : 
+OF                   : 
+OR                   : 
+OUT                  : 
+PASSA_ARGUMENTO      : 
+PLUS                 : 
+PLUS_ASSIGN          : 
+POTENCIACAO          : 
+PRIVATE              : 
+PROTECTED            : 
+RBRACE               : 
+RBRACKET             : 
+REQUIRE              : 9
+RETURN               : 
+RPAREN               : 
+SAFE_CALL            : 
+SCOPE                : 
+SELECT               : 
+SEMICOLON            : 
+SIZEOF               : 
+STRING               : 
+STRUCT               : 
+SYMBOL               : 
+TERNARIO             : 
+THEN                 : 
+TIPO_EQUAL           : 
+TRUE                 : 
+TYPE                 : 
+TYPEOF               : 
+UNINITIALIZED        : 
+UNION                : 
+UNLESS               : 
+UNTIL                : 
+VAR_GLOBAL           : 
+WHEN                 : 
+WHILE                : 
+YIELD                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+boolean              : 13
+class_functions      : 6
+code_functions       : 1
+delimitador          : 9
+empty                : 3 5 7
+float                : 12
+global_declarations  : 4
+globals              : 
+intenger             : 11
+interger             : 
+opt_classes          : 1
+opt_globals          : 1
+opt_require          : 1
+program              : 0
+require              : 2
+types                : 
 

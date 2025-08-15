@@ -77,8 +77,8 @@ reservadas = {
 }
 
 tokens = [
-    'ID', 'STRING','BOOL', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' 
-] + tuple(reservadas.values())
+    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' , 'AT' 
+] + list(reservadas.values())
 
 #Não coloquei os operadores bit a bit 
 
@@ -175,12 +175,12 @@ t_ignore = ' \t'
 
 def t_COMMENT_BLOCK(t):
     # Ignora comentários de bloco
-    r'###.*?###'
+    r'\#\#\#(.|\n)*?\#\#\#'
     pass  
 
 def t_COMMENT_SINGLE_LINE(t):
     # Ignora comentários de uma linha
-    r'#.*'
+    r'\#.*'
     pass 
 
 def t_newline(t):

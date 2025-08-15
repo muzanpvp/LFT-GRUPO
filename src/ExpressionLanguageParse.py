@@ -51,5 +51,17 @@ def p_boolean(p):
     'boolean    :   BOOL'
 
 
+# Constrói o analisador léxico a partir das regras definidas
+lexer = lex.lex()
+
+# Constrói o analisador sintático a partir das regras definidas
+parser = yacc.yacc()
+
+# Exemplo de como usar o parser para analisar uma entrada
+if __name__ == '__main__':
+    data = '@ integer variavel ;' # Exemplo de código para testar
+    result = parser.parse(data, lexer=lexer)
+    print(result) # Imprime o resultado da análise (geralmente uma AST)
+
 
 
