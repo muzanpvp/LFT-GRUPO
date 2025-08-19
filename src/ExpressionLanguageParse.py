@@ -5,6 +5,7 @@ from ExpressionLanguageLex import *
 #---------------------------------------------PROGRAM--------------------------------------------------------------
 def p_program(p):
     '''program : opt_require opt_globals opt_modules opt_code_functions opt_code'''
+#permutar
 
 #---------------------------------------------REQUIRE--------------------------------------------------------------
 
