@@ -4,68 +4,34 @@ Unused terminals:
 
     ABSTRACT
     ALIAS
-    AND
     AS
-    ASSIGN
     ASSOCIACAO
     AT
     BEGIN
-    BREAK
-    CASE
-    CHAR
     CLASS
     CLASS_VAR
     COLON
-    COMMA
     DEF
     DEFINE_BLOCO
     DIVIDE
-    DIVIDE_ASSIGN
-    DO
-    DOT
-    ELSE
+    DOLAR_SIGN
     ELSIF
-    END
     ENUM
-    EQUAL
-    FALSE
-    FOR
-    GREATER_EQUAL
-    GREATER_THAN
-    IF
     IN
     INCLUDE
     INSTANCE_VAR
-    LBRACE
-    LBRACKET
-    LESS_EQUAL
-    LESS_THAN
-    LPAREN
     MACRO
-    MINUS
-    MINUS_ASSIGN
     MODULE
     MODULO
-    MODULO_ASSIGN
     MULTI
-    MULTI_ASSIGN
-    NEXT
     NIL
     NOT
-    NOT_EQUAL
     OF
-    OR
     OUT
     PASSA_ARGUMENTO
-    PLUS
-    PLUS_ASSIGN
     POTENCIACAO
     PRIVATE
     PROTECTED
-    RBRACE
-    RBRACKET
-    RETURN
-    RPAREN
     SAFE_CALL
     SCOPE
     SELECT
@@ -74,17 +40,11 @@ Unused terminals:
     SYMBOL
     TERNARIO
     THEN
-    TIPO_EQUAL
-    TRUE
     TYPE
     TYPEOF
     UNINITIALIZED
     UNION
-    UNLESS
-    UNTIL
     VAR_GLOBAL
-    WHEN
-    WHILE
     YIELD
 
 Grammar
@@ -93,160 +53,377 @@ Rule 0     S' -> program
 Rule 1     program -> opt_require opt_globals opt_classes opt_modules opt_ code_functions opt_code
 Rule 2     opt_require -> require
 Rule 3     opt_require -> empty
-Rule 4     opt_globals -> global_declarations
-Rule 5     opt_globals -> empty
-Rule 6     opt_classes -> classes_functions
-Rule 7     opt_classes -> empty
-Rule 8     empty -> <empty>
-Rule 9     delimiter -> NEWLINE
-Rule 10    delimiter -> SEMICOLON
-Rule 11    delimiter -> empty
-Rule 12    require -> REQUIRE ID delimiter
-Rule 13    require -> REQUIRE STRING delimiter
-Rule 14    globals_declarations -> globals
-Rule 15    globals_declarations -> globals_declarations globals
-Rule 16    globals -> DOLAR_SIGN ID delimiter
-Rule 17    globals -> DOLAR_SIGN ID EQUALS expression delimiter
-Rule 18    types -> intenger
-Rule 19    types -> float
-Rule 20    types -> boolean
-Rule 21    interger -> INT
-Rule 22    interger -> INT8
-Rule 23    interger -> INT16
-Rule 24    interger -> INT32
-Rule 25    interger -> INT64
-Rule 26    interger -> INT128
-Rule 27    float -> FLOAT
-Rule 28    float -> FLOAT32
-Rule 29    float -> FLOAT64
-Rule 30    boolean -> BOOL
+Rule 4     require_declarations -> require
+Rule 5     require_declarations -> require NEWLINE require_declarations
+Rule 6     require -> REQUIRE STRING delimiter
+Rule 7     opt_globals -> globals_declarations
+Rule 8     opt_globals -> empty
+Rule 9     globals_declarations -> globals
+Rule 10    globals_declarations -> globals_declarations NEWLINE globals
+Rule 11    globals -> CONSTANT ASSIGN expression delimiter
+Rule 12    opt_classes -> classes_functions
+Rule 13    opt_classes -> empty
+Rule 14    opt_modules -> empty
+Rule 15    code_functions -> empty
+Rule 16    operand -> constant
+Rule 17    operand -> functionCall
+Rule 18    operand -> expParentheses
+Rule 19    constant -> constant_integer
+Rule 20    constant -> constant_float
+Rule 21    constant -> constant_string
+Rule 22    constant -> constant_boolean
+Rule 23    constant -> constant_char
+Rule 24    constant -> constant_id
+Rule 25    constant_integer -> INTNUMBER
+Rule 26    constant_integer -> HEXNUMBER
+Rule 27    constant_integer -> BINNUMBER
+Rule 28    constant_integer -> OCTNUMBER
+Rule 29    constant_float -> FLOATNUMBER
+Rule 30    constant_string -> STRING
+Rule 31    constant_char -> CHAR
+Rule 32    constant_boolean -> TRUE
+Rule 33    constant_boolean -> FALSE
+Rule 34    constant_id -> ID
+Rule 35    constant_id -> GLOBALVAR
+Rule 36    constant_id -> INSTANCEVAR
+Rule 37    constant_id -> CLASSVAR
+Rule 38    functionCall -> ID LPAREN opt_arguments RPAREN
+Rule 39    opt_arguments -> arguments
+Rule 40    opt_arguments -> empty
+Rule 41    arguments -> expression
+Rule 42    arguments -> expression COMMA arguments
+Rule 43    expParentheses -> LPAREN expression RPAREN
+Rule 44    statements -> expression
+Rule 45    statements -> expression NEWLINE statements
+Rule 46    statements -> control_structures
+Rule 47    statements -> control_structures NEWLINE statements
+Rule 48    control_structures -> loop
+Rule 49    control_structures -> conditional
+Rule 50    control_structures -> case
+Rule 51    control_structures -> return
+Rule 52    conditional -> if
+Rule 53    conditional -> unless
+Rule 54    loop_structure -> while
+Rule 55    loop_structure -> until
+Rule 56    loop_structure -> loop
+Rule 57    loop_structure -> iterator
+Rule 58    while_loop -> WHILE expression statements_block
+Rule 59    until_loop -> UNTIL expression statements_block
+Rule 60    loop -> LOOP statements_block
+Rule 61    iterator -> expression DOT TIMES statements_block
+Rule 62    iterator -> expression DOT EACH DO PIPE ID PIPE statements_block END
+Rule 63    iterator -> expression DOT EACH LBRACE PIPE ID PIPE RBRACE block
+Rule 64    if -> IF expression statements_block opt_elseif opt_else END
+Rule 65    opt_elseif -> ELSEIF expression statements_block opt_elseif
+Rule 66    opt_elseif -> empty
+Rule 67    opt_else -> ELSE statements_block
+Rule 68    opt_else -> empty
+Rule 69    unless -> UNLESS expression statements_block opt_else END
+Rule 70    case -> CASE expression when_list opt_else END
+Rule 71    when_list -> when_list WHEN expression statements_block
+Rule 72    when_list -> WHEN expression statements_block
+Rule 73    opt_blocks -> WHEN expression statements_block opt_else END
+Rule 74    opt_blocks -> empty
+Rule 75    break_statement -> BREAK expression
+Rule 76    break_statement -> BREAK
+Rule 77    next_statement -> NEXT expression
+Rule 78    next_statement -> NEXT
+Rule 79    return_statement -> RETURN expression
+Rule 80    return_statement -> RETURN
+Rule 81    expression -> assignment_expression
+Rule 82    assignment_expression -> ID ASSIGN expression
+Rule 83    assignment_expression -> ID PLUS_ASSIGN expression
+Rule 84    assignment_expression -> ID MINUS_ASSIGN expression
+Rule 85    assignment_expression -> ID MULTI_ASSIGN expression
+Rule 86    assignment_expression -> ID DIVIDE_ASSIGN expression
+Rule 87    assignment_expression -> ID MODULO_ASSIGN expression
+Rule 88    assignment_expression -> ID POTENCIACAO_ASSIGN expression
+Rule 89    assignment_expression -> ID OR_ASSIGN expression
+Rule 90    assignment_expression -> ID AND_ASSIGN expression
+Rule 91    assignment_expression -> multiple_assignment
+Rule 92    assignment_expression -> ternary_expression
+Rule 93    multiple_assignment -> ID COMMA ID ASSIGN expression COMMA expression
+Rule 94    multiple_assignment -> ID COMMA ID ASSIGN LBRACKET expression_list RBRACKET
+Rule 95    multiple_assignment -> ID ASSIGN LBRACKET expression_list RBRACKET
+Rule 96    ternary_expression -> or_expression QMARK expression TCOLON expression
+Rule 97    or_expression -> or_expression OR and_expression
+Rule 98    or_expression -> and_expression
+Rule 99    and_expression -> and_expression AND equality_expression
+Rule 100   and_expression -> equality_expression
+Rule 101   equality_expression -> equality_expression EQUAL relational_expression
+Rule 102   equality_expression -> equality_expression NOT_EQUAL relational_expression
+Rule 103   equality_expression -> equality_expression TIPO_EQUAL relational_expression
+Rule 104   equality_expression -> relational_expression
+Rule 105   relational_expression -> relational_expression GREATER_THAN add_expression
+Rule 106   relational_expression -> relational_expression LESS_THAN add_expression
+Rule 107   relational_expression -> relational_expression GREATER_EQUAL add_expression
+Rule 108   relational_expression -> relational_expression LESS_EQUAL add_expression
+Rule 109   relational_expression -> bitwise_expression
+Rule 110   bitwise_expression -> bitwise_expression SHIFT_LEFT add_expression
+Rule 111   bitwise_expression -> bitwise_expression SHIFT_RIGHT add_expression
+Rule 112   bitwise_expression -> bitwise_expression BIT_AND add_expression
+Rule 113   bitwise_expression -> bitwise_expression BIT_OR add_expression
+Rule 114   bitwise_expression -> bitwise_expression BIT_XOR add_expression
+Rule 115   bitwise_expression -> add_expression
+Rule 116   add_expression -> add_expression PLUS multi_expression
+Rule 117   add_expression -> add_expression MINUS multi_expression
+Rule 118   add_expression -> multi_expression
+Rule 119   multi_expression -> multi_expression TIMES exponent_expression
+Rule 120   multi_expression -> multi_expression DIVISION exponent_expression
+Rule 121   multi_expression -> multi_expression MOD exponent_expression
+Rule 122   multi_expression -> exponent_expression
+Rule 123   exponent_expression -> unary_expression POTENCIACAO_ASSIGN exponent_expression
+Rule 124   exponent_expression -> unary_expression
+Rule 125   unary_expression -> EXCLAMATION unary_expression
+Rule 126   unary_expression -> TILDE unary_expression
+Rule 127   unary_expression -> PLUS unary_expression
+Rule 128   unary_expression -> MINUS unary_expression
+Rule 129   unary_expression -> primary_expression
+Rule 130   primary_expression -> LPAREN expression RPAREN
+Rule 131   primary_expression -> ID
+Rule 132   primary_expression -> LITERAL
+Rule 133   primary_expression -> range_expression
+Rule 134   range_expression -> expression DOTDOT expression
+Rule 135   range_expression -> expression DOTDOTDOT expression
+Rule 136   empty -> <empty>
+Rule 137   statements_block -> DO statements END
+Rule 138   statements_block -> LBRACE statements RBRACE
+Rule 139   statements_block -> statements
+Rule 140   delimiter -> NEWLINE
+Rule 141   delimiter -> SEMICOLON
+Rule 142   delimiter -> empty
+Rule 143   types -> integer
+Rule 144   types -> float
+Rule 145   types -> boolean
+Rule 146   types_null -> type
+Rule 147   types_null -> empty
+Rule 148   integer -> INT
+Rule 149   integer -> INT8
+Rule 150   integer -> INT16
+Rule 151   integer -> INT32
+Rule 152   integer -> INT64
+Rule 153   integer -> INT128
+Rule 154   integer -> UINT8
+Rule 155   integer -> UINT16
+Rule 156   integer -> UINT32
+Rule 157   integer -> UINT64
+Rule 158   integer -> UINT128
+Rule 159   float -> FLOAT
+Rule 160   float -> FLOAT32
+Rule 161   float -> FLOAT64
+Rule 162   boolean -> BOOL
 
 Terminals, with rules where they appear
 
 ABSTRACT             : 
 ALIAS                : 
-AND                  : 
+AND                  : 99
 AS                   : 
-ASSIGN               : 
+ASSIGN               : 11 82 93 94 95
 ASSOCIACAO           : 
 AT                   : 
 BEGIN                : 
-BOOL                 : 30
-BREAK                : 
-CASE                 : 
-CHAR                 : 
+BOOL                 : 162
+BREAK                : 75 76
+CASE                 : 70
+CHAR                 : 31
 CLASS                : 
 CLASS_VAR            : 
 COLON                : 
-COMMA                : 
+COMMA                : 42 93 93 94
 DEF                  : 
 DEFINE_BLOCO         : 
 DIVIDE               : 
-DIVIDE_ASSIGN        : 
-DO                   : 
-DOLAR_SIGN           : 16 17
-DOT                  : 
-ELSE                 : 
+DIVIDE_ASSIGN        : 86
+DO                   : 62 137
+DOLAR_SIGN           : 
+DOT                  : 61 62 63
+ELSE                 : 67
 ELSIF                : 
-END                  : 
+END                  : 62 64 69 70 73 137
 ENUM                 : 
-EQUAL                : 
-FALSE                : 
-FLOAT                : 27
-FLOAT32              : 28
-FLOAT64              : 29
-FOR                  : 
-GREATER_EQUAL        : 
-GREATER_THAN         : 
-ID                   : 12 16 17
-IF                   : 
+EQUAL                : 101
+FALSE                : 33
+FLOAT                : 159
+FLOAT32              : 160
+FLOAT64              : 161
+GREATER_EQUAL        : 107
+GREATER_THAN         : 105
+ID                   : 34 38 62 63 82 83 84 85 86 87 88 89 90 93 93 94 94 95 131
+IF                   : 64
 IN                   : 
 INCLUDE              : 
 INSTANCE_VAR         : 
-INT                  : 21
-INT128               : 26
-INT16                : 23
-INT32                : 24
-INT64                : 25
-INT8                 : 22
-LBRACE               : 
-LBRACKET             : 
-LESS_EQUAL           : 
-LESS_THAN            : 
-LPAREN               : 
+INT                  : 148
+INT128               : 153
+INT16                : 150
+INT32                : 151
+INT64                : 152
+INT8                 : 149
+LBRACE               : 63 138
+LBRACKET             : 94 95
+LESS_EQUAL           : 108
+LESS_THAN            : 106
+LPAREN               : 38 43 130
 MACRO                : 
-MINUS                : 
-MINUS_ASSIGN         : 
+MINUS                : 117 128
+MINUS_ASSIGN         : 84
 MODULE               : 
 MODULO               : 
-MODULO_ASSIGN        : 
+MODULO_ASSIGN        : 87
 MULTI                : 
-MULTI_ASSIGN         : 
-NEXT                 : 
+MULTI_ASSIGN         : 85
+NEXT                 : 77 78
 NIL                  : 
 NOT                  : 
-NOT_EQUAL            : 
+NOT_EQUAL            : 102
 OF                   : 
-OR                   : 
+OR                   : 97
 OUT                  : 
 PASSA_ARGUMENTO      : 
-PLUS                 : 
-PLUS_ASSIGN          : 
+PLUS                 : 116 127
+PLUS_ASSIGN          : 83
 POTENCIACAO          : 
 PRIVATE              : 
 PROTECTED            : 
-RBRACE               : 
-RBRACKET             : 
-REQUIRE              : 12 13
-RETURN               : 
-RPAREN               : 
+QMARK                : 96
+RBRACE               : 63 138
+RBRACKET             : 94 95
+REQUIRE              : 6
+RETURN               : 79 80
+RPAREN               : 38 43 130
 SAFE_CALL            : 
 SCOPE                : 
 SELECT               : 
-SEMICOLON            : 10
+SEMICOLON            : 141
 SIZEOF               : 
-STRING               : 13
+STRING               : 6 30
 STRUCT               : 
 SYMBOL               : 
 TERNARIO             : 
 THEN                 : 
-TIPO_EQUAL           : 
-TRUE                 : 
+TIPO_EQUAL           : 103
+TRUE                 : 32
 TYPE                 : 
 TYPEOF               : 
+UINT128              : 158
+UINT16               : 155
+UINT32               : 156
+UINT64               : 157
+UINT8                : 154
 UNINITIALIZED        : 
 UNION                : 
-UNLESS               : 
-UNTIL                : 
+UNLESS               : 69
+UNTIL                : 59
 VAR_GLOBAL           : 
-WHEN                 : 
-WHILE                : 
+WHEN                 : 71 72 73
+WHILE                : 58
 YIELD                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-EQUALS               : 17
-NEWLINE              : 9
-boolean              : 20
-classes_functions    : 6
+AND_ASSIGN           : 90
+BINNUMBER            : 27
+BIT_AND              : 112
+BIT_OR               : 113
+BIT_XOR              : 114
+CLASSVAR             : 37
+CONSTANT             : 11
+DIVISION             : 120
+DOTDOT               : 134
+DOTDOTDOT            : 135
+EACH                 : 62 63
+ELSEIF               : 65
+EXCLAMATION          : 125
+FLOATNUMBER          : 29
+GLOBALVAR            : 35
+HEXNUMBER            : 26
+INSTANCEVAR          : 36
+INTNUMBER            : 25
+LITERAL              : 132
+LOOP                 : 60
+MOD                  : 121
+NEWLINE              : 5 10 45 47 140
+OCTNUMBER            : 28
+OR_ASSIGN            : 89
+PIPE                 : 62 62 63 63
+POTENCIACAO_ASSIGN   : 88 123
+SHIFT_LEFT           : 110
+SHIFT_RIGHT          : 111
+TCOLON               : 96
+TILDE                : 126
+TIMES                : 61 119
+add_expression       : 105 106 107 108 110 111 112 113 114 115 116 117
+and_expression       : 97 98 99
+arguments            : 39 42
+assignment_expression : 81
+bitwise_expression   : 109 110 111 112 113 114
+block                : 63
+boolean              : 145
+break_statement      : 
+case                 : 50
+classes_functions    : 12
 code_functions       : 1
-delimiter            : 12 13 16 17
-empty                : 3 5 7 11
-expression           : 17
-float                : 19
-global_declarations  : 4
-globals              : 14 15
-globals_declarations : 15
-intenger             : 18
-interger             : 
+conditional          : 49
+constant             : 16
+constant_boolean     : 22
+constant_char        : 23
+constant_float       : 20
+constant_id          : 24
+constant_integer     : 19
+constant_string      : 21
+control_structures   : 46 47
+delimiter            : 6 11
+empty                : 3 8 13 14 15 40 66 68 74 142 147
+equality_expression  : 99 100 101 102 103
+expParentheses       : 18
+exponent_expression  : 119 120 121 122 123
+expression           : 11 41 42 43 44 45 58 59 61 62 63 64 65 69 70 71 72 73 75 77 79 82 83 84 85 86 87 88 89 90 93 93 96 96 130 134 134 135 135
+expression_list      : 94 95
+float                : 144
+functionCall         : 17
+globals              : 9 10
+globals_declarations : 7 10
+if                   : 52
+integer              : 143
+iterator             : 57
+loop                 : 48 56
+loop_structure       : 
+multi_expression     : 116 117 118 119 120 121
+multiple_assignment  : 91
+next_statement       : 
+operand              : 
 opt_                 : 1
+opt_arguments        : 38
+opt_blocks           : 
 opt_classes          : 1
 opt_code             : 1
+opt_else             : 64 69 70 73
+opt_elseif           : 64 65
 opt_globals          : 1
 opt_modules          : 1
 opt_require          : 1
+or_expression        : 96 97
+primary_expression   : 129
 program              : 0
-require              : 2
+range_expression     : 133
+relational_expression : 101 102 103 104 105 106 107 108
+require              : 2 4 5
+require_declarations : 5
+return               : 51
+return_statement     : 
+statements           : 45 47 137 138 139
+statements_block     : 58 59 60 61 62 64 65 67 69 71 72 73
+ternary_expression   : 92
+type                 : 146
 types                : 
+types_null           : 
+unary_expression     : 123 124 125 126 127 128
+unless               : 53
+until                : 55
+until_loop           : 
+when_list            : 70 71
+while                : 54
+while_loop           : 
 
