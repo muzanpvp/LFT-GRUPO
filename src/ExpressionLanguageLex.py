@@ -1,93 +1,85 @@
-
 import ply.lex as lex
-
 
 reservadas = {
     # Controle de Fluxo
+    'if'    :   'IF', 
+    'else'  :   'ELSE', 
+    'elsif' :   'ELSIF', 
+    'case'  :   'CASE', 
+    'when'  :   'WHEN', 
+    'while' :   'WHILE', 
+    'until' :   'UNTIL',
+    'break' :   'BREAK', 
+    'next'  :   'NEXT', 
+    'yield' :   'YIELD',
+    'do'    :   'DO', 
+    'then'  :   'THEN', 
+    'in'    :   'IN',
+    'unless'    :   'UNLESS',
+    'return'    :   'RETURN', 
 
-    'if' : 'IF', 
-    'else' : 'ELSE', 
-    'elsif' : 'ELSIF', 
-    'unless' : 'UNLESS',
-    'case' : 'CASE', 
-    'when' : 'WHEN', 
-    'while' : 'WHILE', 
-    'until' : 'UNTIL',
-    'break' : 'BREAK', 
-    'next' : 'NEXT', 
-    'yield' : 'YIELD',
-    'return' : 'RETURN', 
-    'do' : 'DO', 
-    'then' : 'THEN', 
-    'in' : 'IN',
-
-    # Declaração e Definição
-
-    'def' : 'DEF', 
-    'class' : 'CLASS', 
-    'module' : 'MODULE', 
-    'struct' : 'STRUCT',
-    'enum' : 'ENUM', 
-    'union' : 'UNION', 
-    'macro' : 'MACRO', 
-    'abstract' : 'ABSTRACT',
-    'alias' : 'ALIAS', 
-    'include' : 'INCLUDE', 
-    'require' : 'REQUIRE', 
-
+    # Declaração e Definicao
+    'def'   :   'DEF', 
+    'class' :   'CLASS', 
+    'alias' :   'ALIAS',
+    'enum'  :   'ENUM', 
+    'union' :   'UNION', 
+    'macro' :   'MACRO', 
+    'module'    :   'MODULE', 
+    'struct'    :   'STRUCT',
+    'abstract'  :   'ABSTRACT',
+    'include'   :   'INCLUDE', 
+    'require'   :   'REQUIRE', 
 
     # Literais e Valores Especiais
-
-    'true' : 'TRUE', 
-    'false' : 'FALSE', 
-    'nil' : 'NIL',
-    'uninitialized' : 'UNINITIALIZED', 
-  
-
-    # Tipos, Operações e Metaprogramação
-
-    'as' : 'AS', 
-    'typeof' : 'TYPEOF', 
-    'type' : 'TYPE', 
-    'sizeof' : 'SIZEOF',
-    'out' : 'OUT',
-    'private' : 'PRIVATE', 
-    'protected' : 'PROTECTED', 
-    'of' : 'OF',
+    'true'  :   'TRUE', 
+    'false' :   'FALSE', 
+    'nil'   :   'NIL',
+    'uninitialized' :   'UNINITIALIZED', 
+    'as'    :   'AS', 
+    'type'  :   'TYPE', 
+    'out'   : 'OUT',
+    'of'    :   'OF',
+    'private'   :   'PRIVATE', 
+    'protected' :   'PROTECTED', 
+    'sizeof'    :   'SIZEOF',
+    'typeof'    :   'TYPEOF', 
 
     # Blocos e Outros
-
     'begin' : 'BEGIN', 
-    'end' : 'END', 
-    'select' : 'SELECT',
+    'end'   : 'END', 
+    'select'    : 'SELECT',
 
-    #Tipos
+    # Tipos de Dados
     'int'   :   'INT',
     'int8'  :   'INT8',
     'int16' :   'INT16',
     'int32' :   'INT32',
     'int64' :   'INT64',
-    'int128':   'INT128',
-    'uint8'  :   'UINT8',
-    'uint16' :   'UINT16',
-    'uint32' :   'UINT32',
-    'uint64' :   'UINT64',
-    'uint128':   'UINT128',
+    'int128'    :   'INT128',
+    'uint8' :   'UINT8',
+    'uint16'    :   'UINT16',
+    'uint32'    :   'UINT32',
+    'uint64'    :   'UINT64',
+    'uint128'   :   'UINT128',
     'float' :   'FLOAT',
-    'float32' :   'FLOAT32',
-    'float64' :   'FLOAT64',
+    'float32'   :   'FLOAT32',
+    'float64'   :   'FLOAT64',
     'bool'  :   'BOOL'
-
 }
 
 tokens = [
-    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' , 'AT', 'DOLAR_SIGN' ,'QMARK'
+    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN',
+    'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 
+    'SAFE_CALL', 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE','COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO', 'AT', 'DOLAR_SIGN', 'QMARK', 'DOTDOT' , 'DOTDOTDOT',
+    'INTNUMBER', 'HEXNUMBER', 'BINNUMBER', 'OCTNUMBER', 'FLOATNUMBER' ,'NEWLINE', 'CONSTANT', 'GLOBALVAR', 'INSTANCEVAR', 'CLASSVAR','LOOP', 'EACH', 'PIPE', 'POTENCIACAO_ASSIGN', 'OR_ASSIGN', 'AND_ASSIGN', 'TCOLON', 'SHIFT_LEFT', 'SHIFT_RIGHT', 'BIT_AND', 'BIT_OR', 'BIT_XOR',
+    'EXCLAMATION', 'TILDE', 'LITERAL'
 ] + list(reservadas.values())
 
-#Não coloquei os operadores bit a bit 
+
+# Operadores
 
 t_POTENCIACAO      = r'\*\*'
-# Os operadores com ASSIGN, seria os que realizar a operação e atribui(+=)
 t_PLUS_ASSIGN      = r'\+='
 t_MINUS_ASSIGN     = r'-='
 t_MULTI_ASSIGN     = r'\*='
@@ -99,20 +91,17 @@ t_MULTI            = r'\*'
 t_DIVIDE           = r'/'
 t_MODULO           = r'%'
 t_ASSIGN           = r'='
-# Igualdade estrita
 t_TIPO_EQUAL       = r'==='  
 t_EQUAL            = r'=='
 t_NOT_EQUAL        = r'!='
 t_LESS_EQUAL       = r'<='
 t_GREATER_EQUAL    = r'>='
 t_LESS_THAN        = r'<'
-t_GREATER_THAN    = r'>'   
+t_GREATER_THAN     = r'>'   
 t_AND              = r'&&'
 t_OR               = r'\|\|'
 t_NOT              = r'!'
-#Chamada segura do método
 t_SCOPE            = r'::'
-# Operador para passar bloco como argumento 
 t_PASSA_ARGUMENTO  = r'&'     
 t_LPAREN           = r'\('
 t_RPAREN           = r'\)'
@@ -123,29 +112,49 @@ t_RBRACE           = r'\}'
 t_COMMA            = r','
 t_SEMICOLON        = r';'
 t_COLON            = r':'
-#É o operador usado para definir pares chave-valor em hashes. Da para entender com o (map) do java 
 t_ASSOCIACAO       = r'=>'
 t_AT               = r'@'
 t_DOLAR_SIGN       = r'\$'
 t_QMARK            = r'\?'
+t_DOT              = r'.'
+t_DOTDOT           = r'..'
+t_DOTDOTDOT        = r'...'
+t_PIPE             = r'\|'
+t_EXCLAMATION      = r'!'
+t_TILDE            = r'~'
+t_TCOLON           = r'\?'
+t_SHIFT_LEFT       = r'<<'
+t_SHIFT_RIGHT      = r'>>'
+t_BIT_AND          = r'&'
+t_BIT_OR           = r'\|'
+t_BIT_XOR          = r'\^'
 
-def t_FLOAT(t):
-    r'([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?|[0-9]+[eE][-+]?[0-9]+'
-    # Remove underscores e converte para float
-    t.value = float(t.value.replace('_', ''))
+
+
+def t_INTNUMBER(t):
+    r'[0-9_]+'
+    t.value = int(t.value.replace('_',''))
     return t
 
-def t_INTEGER(t):
-    r'0x[0-9a-fA-F_]+|0o[0-7_]+|0b[01_]+|[0-9_]+'
-    value = t.value.replace('_', '')
-    if value.startswith('0x'):
-        t.value = int(value, 16)
-    elif value.startswith('0o'):
-        t.value = int(value, 8)
-    elif value.startswith('0b'):
-        t.value = int(value, 2)
-    else:
-        t.value = int(value)
+def t_FLOATNUMBER(t):
+    r'([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?|[0-9]+[eE][-+]?[0-9]+'
+    # Remove underscores e converte para float
+    t.value = float(t.value.replace('_',''))
+    return t
+
+def t_BINNUMBER(t):
+    r'0b[01_]+'
+    t.value = int(t.value.replace('_',''), 2)
+    return t
+
+def t_OCTNUMBER(t):
+    r'0o[0-7_]+'
+    t.value = int(t.value.replace('_',''), 8)
+    return t
+
+def t_HEXNUMBER(t):
+    r'0x[0-9a-fA-F_]+'
+    t.value = int(t.value.replace('_',''), 16)
     return t
 
 def t_STRING(t):
@@ -154,43 +163,57 @@ def t_STRING(t):
 
 def t_CHAR(t):
     r"'([^'\\]|\\.)'"
-    # Remove as aspas simples
     t.value = t.value[1:-1]
     return t
 
 def t_SYMBOL(t):
-    r':([a-zA-Z_]\w*|\"([^\\\n])*\"|\'([^\'\\])*\')'
+    r':([a-zA-Z_]\w*|\"([^\\\n])*\"|\'([^\'\\])*?\')'
     return t
 
 def t_VAR_GLOBAL(t):
-    r'\[A-Z_]\w*'
+    r'\$[A-Z_]\w*'
     return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*[\!\?]?'
-    # Verifica se é palavra reservada, substitui tipo do token
     t.type = reservadas.get(t.value , 'ID')
+    return t
+
+def t_CONSTANT(t):
+    r'[A-Z_][A-Z0-9_]*'
+    return t
+
+def t_GLOBALVAR(t):
+    r'\$[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+def t_INSTANCEVAR(t): 
+    r'\@[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+def t_CLASSVAR(t):
+    r'\@\@[a-zA-Z_][a-zA-Z0-9_]*'
     return t
 
 t_ignore = ' \t'
 
 def t_COMMENT_BLOCK(t):
-    # Ignora comentários de bloco
     r'\#\#\#(.|\n)*?\#\#\#'
-    pass  
+    pass
 
 def t_COMMENT_SINGLE_LINE(t):
-    # Ignora comentários de uma linha
     r'\#.*'
-    pass 
+    pass
 
-def t_newline(t):
+def t_NEWLINE(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
 def t_error(t):
     print(f"Caractere inválido '{t.value[0]}' na linha {t.lineno}")
     t.lexer.skip(1)
+
+#Inicializacao
 
 lexer = lex.lex()
 entrada = ''
