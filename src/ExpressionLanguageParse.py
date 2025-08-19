@@ -4,13 +4,13 @@ from ExpressionLanguageLex import *
 
 #---------------------------------------------PROGRAM--------------------------------------------------------------
 def p_program(p):
-    '''program : opt_require opt_globals opt_classes opt_modules opt_ code_functions opt_code'''
+    '''program : opt_require opt_globals opt_modules opt_code_functions opt_code'''
 
 #---------------------------------------------REQUIRE--------------------------------------------------------------
 
 def p_opt_require(p):
     '''opt_require  :   require
-                    |   empty'''
+                    |   empty''' 
     
 def p_require_declarations(p):
     '''require_declarations :   require
@@ -31,28 +31,49 @@ def p_globals_declarations(p):
 def p_globals(p):
     '''globals  :   CONSTANT ASSIGN expression delimiter '''
 
-#-----------------------------------------------CLASSES------------------------------------------------------------
-
-def p_opt_classes(p):
-    '''opt_classes  :   classes_functions
-                    |    empty'''
-    
-def p_classes(p):
-    ''''''
 #-----------------------------------------------MODULES------------------------------------------------------------
 
 def p_opt_modules(p):
-    '''opt_modules : empty'''  
+    '''opt_modules  : modules
+                    | empty'''
+
+def p_modules(p):
+    '''modules  :   modules module
+                |   module'''  
+
+def p_module(p):
+    '''module   :   MODULE ID NEWLINE opt_code END'''
 
 #-----------------------------------------------FUNCTIONS----------------------------------------------------------
 
+def p_opt_code_functions(p):
+    '''opt_code_functions   : code_functions
+                            | empty''' 
+
 def p_code_functions(p):
-    '''code_functions : empty'''  
+    '''code_functions   :   code_functions functions
+                        |   functions''' 
+
+def p_functions(p):
+    '''functions    :  DEF ID opt_params NEWLINE opt_code END'''
 
 #----------------------------------------------------CODE----------------------------------------------------------
-def opt_code(p):
-    '''opt_code :  empty '''
+def p_opt_code(p):
+    '''opt_code :   statements
+                |   empty '''
 
+
+def p_statementes(p):
+    '''statementes : statement
+                  | statement statementes'''
+
+def p_statement(p):
+    '''statement : expression
+                 | control_structures
+                 | return_statement
+                 | break_statement
+                 | next_statement'''
+ 
 
 
 #---------------------------------------------------OPERAND--------------------------------------------------------
@@ -72,7 +93,7 @@ def p_constant(p):
 
 def p_constant_integer(p):
     '''constant_integer :   INTNUMBER
-                        |   HEXNUMBER
+                        |   HEXNUMBER 
                         |   BINNUMBER
                         |   OCTNUMBER'''
 
@@ -122,7 +143,7 @@ def p_control_structures(p):
     '''control_structures : loop
                           | conditional
                           | case
-                          | return'''
+                          | return_statement'''
     
 def p_conditional(p):
     '''conditional  :   if 
@@ -133,28 +154,28 @@ def p_loop_structure(p):
                         |   until
                         |   loop
                         |   iterator'''
-
+#Falta select
 def p_while(p):
-    '''while_loop   :   WHILE expression statements_block'''
+    '''while   :   WHILE expression statements_block'''
 
 def p_until(p):
-    '''until_loop   :   UNTIL expression statements_block'''
+    '''until  :   UNTIL expression statements_block'''
 
 def p_loop(p):
     '''loop :   LOOP statements_block'''
 
 def p_iterator(p):
-    '''iterator :   expression DOT TIMES statements_block
+    '''iterator :   expression DOT MULTI statements_block
                 |   expression DOT EACH DO PIPE ID PIPE statements_block END
-                |   expression DOT EACH LBRACE PIPE ID PIPE RBRACE block'''
+                |   expression DOT EACH LBRACE PIPE ID PIPE RBRACE statements_block'''
 
 #--------------------------------------------------CONDITIONS------------------------------------------------------
 
 def p_if(p):
-    '''if   :   IF expression statements_block opt_elseif opt_else END'''
+    '''if   :   IF expression statements_block opt_elsif opt_else END'''
     
-def p_opt_elseif(p):
-    '''opt_elseif   :   ELSEIF expression statements_block opt_elseif
+def p_opt_elsif(p):
+    '''opt_elsif    :   ELSIF expression statements_block opt_elsif
                     |   empty'''
     
 def p_opt_else(p):
@@ -178,7 +199,7 @@ def p_opt_blocks(p):
 
 
 #--------------------------------------------------CONTROL_FLOW----------------------------------------------------
-
+#Esta sendo visivel, mas olhar melhor esse BREAK Expresseion
 def p_break(p):
     '''break_statement  :   BREAK expression
                         |   BREAK'''
@@ -254,13 +275,13 @@ def p_add_expression(p):
                         |   multi_expression'''
   
 def p_multi_expression(p):
-    '''multi_expression :   multi_expression TIMES exponent_expression
-                        |   multi_expression DIVISION exponent_expression
-                        |   multi_expression MOD exponent_expression
+    '''multi_expression :   multi_expression MULTI exponent_expression
+                        |   multi_expression DIVIDE exponent_expression
+                        |   multi_expression MODULO exponent_expression
                         |   exponent_expression'''
 
 def p_exponent_expression(p):
-    '''exponent_expression  :   unary_expression POTENCIACAO_ASSIGN exponent_expression
+    '''exponent_expression  :   unary_expression POTENCIACAO exponent_expression
                             |   unary_expression'''
 
 def p_unary_expression(p):
@@ -277,9 +298,15 @@ def p_primary_expression(p):
                           | range_expression'''
     
 def p_range_expression(p):
-    '''range_expression : expression DOTDOT expression
-                        | expression DOTDOTDOT expression'''
+    '''range_expression : or_expression
+                        | or_expression DOTDOT or_expression
+                        | or_expression DOTDOTDOT or_expression'''
+def p_opt_params(p):
+    '''opt_params : empty'''
 
+def p_expression_list(p):
+    '''expression_list : expression
+                       | expression COMMA expression_list'''
 
 
 
@@ -294,8 +321,7 @@ def p_statements_block(p):
                         |   statements'''
 
 def p_delimiter(p):
-    '''delimiter    :   NEWLINE
-                    |   SEMICOLON
+    '''delimiter    :   SEMICOLON
                     |   empty'''
 
 
@@ -305,7 +331,7 @@ def p_types(p):
                 |   boolean'''
     
 def p_types_null(p):
-    '''types_null   :   type
+    '''types_null   :   types
                     |   empty'''
     
 def p_integer(p):
@@ -329,6 +355,13 @@ def p_float(p):
 def p_boolean(p):
     'boolean    :   BOOL'
 
+def p_error(p):
+    if p:
+        print(f"Syntax error at token {p.type}, value {p.value}")
+    else:
+        print("Syntax error at EOF")
+
+
 #----------------------------------------------OtherPart-----------------------------------------------------------
 
 # Constrói o analisador léxico a partir das regras definidas
@@ -339,7 +372,7 @@ parser = yacc.yacc()
 
 # Exemplo de como usar o parser para analisar uma entrada
 if __name__ == '__main__':
-    data = '@ integer variavel ;' # Exemplo de código para testar
+    data = 'puts "oi" ' # Exemplo de código para testar
     result = parser.parse(data, lexer=lexer)
     print(result) # Imprime o resultado da análise (geralmente uma AST)
 
