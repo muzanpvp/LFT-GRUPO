@@ -13,7 +13,6 @@ reservadas = {
     'when' : 'WHEN', 
     'while' : 'WHILE', 
     'until' : 'UNTIL',
-    'for' : 'FOR', 
     'break' : 'BREAK', 
     'next' : 'NEXT', 
     'yield' : 'YIELD',
@@ -69,6 +68,11 @@ reservadas = {
     'int32' :   'INT32',
     'int64' :   'INT64',
     'int128':   'INT128',
+    'uint8'  :   'UINT8',
+    'uint16' :   'UINT16',
+    'uint32' :   'UINT32',
+    'uint64' :   'UINT64',
+    'uint128':   'UINT128',
     'float' :   'FLOAT',
     'float32' :   'FLOAT32',
     'float64' :   'FLOAT64',
@@ -77,7 +81,7 @@ reservadas = {
 }
 
 tokens = [
-    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' , 'AT', 'DOLAR_SIGN'
+    'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN', 'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 'SAFE_CALL' , 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE', 'COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO' , 'AT', 'DOLAR_SIGN' ,'QMARK'
 ] + list(reservadas.values())
 
 #Não coloquei os operadores bit a bit 
@@ -123,6 +127,7 @@ t_COLON            = r':'
 t_ASSOCIACAO       = r'=>'
 t_AT               = r'@'
 t_DOLAR_SIGN       = r'\$'
+t_QMARK            = r'\?'
 
 def t_FLOAT(t):
     r'([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?|[0-9]+[eE][-+]?[0-9]+'
@@ -158,7 +163,7 @@ def t_SYMBOL(t):
     return t
 
 def t_VAR_GLOBAL(t):
-    r'\$[a-zA-Z_]\w*'
+    r'\[A-Z_]\w*'
     return t
 
 def t_ID(t):
