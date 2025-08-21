@@ -1,4 +1,5 @@
 import ply.lex as lex
+from tabulate import tabulate
 
 reservadas = {
     # Controle de Fluxo
@@ -21,13 +22,11 @@ reservadas = {
     # Declaração e Definicao
     'def'   :   'DEF', 
     'class' :   'CLASS', 
-    'alias' :   'ALIAS',
     'enum'  :   'ENUM', 
     'union' :   'UNION', 
     'macro' :   'MACRO', 
     'module'    :   'MODULE', 
     'struct'    :   'STRUCT',
-    'abstract'  :   'ABSTRACT',
     'include'   :   'INCLUDE', 
     'require'   :   'REQUIRE', 
 
@@ -71,9 +70,9 @@ reservadas = {
 tokens = [
     'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO', 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN',
     'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 
-    'SAFE_CALL', 'TERNARIO', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE','COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO', 'AT', 'DOLAR_SIGN', 'QMARK', 'DOTDOT' , 'DOTDOTDOT',
-    'INTNUMBER', 'HEXNUMBER', 'BINNUMBER', 'OCTNUMBER', 'FLOATNUMBER' ,'NEWLINE', 'CONSTANT', 'GLOBALVAR', 'INSTANCEVAR', 'CLASSVAR','LOOP', 'EACH', 'PIPE', 'POTENCIACAO_ASSIGN', 'OR_ASSIGN', 'AND_ASSIGN', 'TCOLON', 'SHIFT_LEFT', 'SHIFT_RIGHT', 'BIT_AND', 'BIT_OR', 'BIT_XOR',
-    'EXCLAMATION', 'TILDE', 'LITERAL'
+    'SAFE_CALL', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE','COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO', 'AT', 'DOLAR_SIGN', 'QMARK', 'DOTDOT' , 'DOTDOTDOT',
+    'INTNUMBER', 'HEXNUMBER', 'BINNUMBER', 'OCTNUMBER', 'FLOATNUMBER' ,'NEWLINE', 'CONSTANT', 'GLOBALVAR', 'INSTANCEVAR', 'CLASSVAR','LOOP', 'EACH', 'PIPE', 'POTENCIACAO_ASSIGN', 'OR_ASSIGN', 'TCOLON', 'SHIFT_LEFT', 'SHIFT_RIGHT',
+    'EXCLAMATION', 'TILDE', 'LITERAL', 'UNDERSCORE', 'ASTERISK'
 ] + list(reservadas.values())
 
 
@@ -117,8 +116,8 @@ t_AT               = r'@'
 t_DOLAR_SIGN       = r'\$'
 t_QMARK            = r'\?'
 t_DOT              = r'.'
-t_DOTDOT           = r'..'
-t_DOTDOTDOT        = r'...'
+t_DOTDOT           = r'\.\.'
+t_DOTDOTDOT        = r'\.\.\.'
 t_PIPE             = r'\|'
 t_EXCLAMATION      = r'!'
 t_TILDE            = r'~'
@@ -128,6 +127,8 @@ t_SHIFT_RIGHT      = r'>>'
 t_BIT_AND          = r'&'
 t_BIT_OR           = r'\|'
 t_BIT_XOR          = r'\^'
+t_UNDERSCORE       = r'_'
+t_ASTERISK          = r'\*'
 
 
 
@@ -208,6 +209,7 @@ def t_COMMENT_SINGLE_LINE(t):
 def t_NEWLINE(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+    return t
 
 def t_error(t):
     print(f"Caractere inválido '{t.value[0]}' na linha {t.lineno}")
@@ -216,7 +218,26 @@ def t_error(t):
 #Inicializacao
 
 lexer = lex.lex()
-entrada = ''
-lexer.input(entrada)
+
+
+entrada= """
+(0...5).each do |i|
+  puts "Número: #{i}"
+end
+
+def greet(name = "World")
+  puts "Hello #{name}"
+end
+
+x, y = 1, 2
+a, b, c = [1, 2, 3]
+
+}
+"""
+lexer = lex.lex()  # Cria o analisador léxico
+lexer.input("if while str False my our ( )")  # Define a entrada do analisador léxico
+
+# Realizando analise lexica
+print('{:10s}{:10s}{:10s}{:10s}'.format("Token", "Lexema", "Linha", "Coluna"))
 for tok in lexer:
-        print(tok)
+  print('{:10s}{:10s}{:10s}{:10s}'.format(tok.type, tok.value, str(tok.lineno), str(tok.lexpos))) 
