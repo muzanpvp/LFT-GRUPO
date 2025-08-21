@@ -213,9 +213,7 @@ def t_error(t):
     t.lexer.skip(1)
 
 #Inicializacao
-
 lexer = lex.lex()
-
 
 entrada= """
 (0...5).each do |i|
@@ -231,10 +229,20 @@ a, b, c = [1, 2, 3]
 
 }
 """
-lexer = lex.lex()  # Cria o analisador léxico
-lexer.input("if while str False my our ( )")  # Define a entrada do analisador léxico
+lexer.input(entrada)
+tabela = []
 
-# Realizando analise lexica
-print('{:10s}{:10s}{:10s}{:10s}'.format("Token", "Lexema", "Linha", "Coluna"))
+# Função para calcular coluna
+def find_column(input_text, token):
+    last_cr = input_text.rfind('\n', 0, token.lexpos)
+    if last_cr < 0:
+        last_cr = -1
+    return token.lexpos - last_cr
+
 for tok in lexer:
-  print('{:10s}{:10s}{:10s}{:10s}'.format(tok.type, tok.value, str(tok.lineno), str(tok.lexpos))) 
+    coluna = find_column(entrada, tok)
+    tabela.append([tok.type, tok.value, tok.lineno, tok.lexpos])
+
+cabecalho = ["Token", "Lexema", "Linha", "Posição"]
+
+print(tabulate(tabela, headers=cabecalho, tablefmt="grid"))
