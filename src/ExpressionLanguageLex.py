@@ -1,6 +1,5 @@
 import ply.lex as lex
-from tabulate import tabulate
-
+from tabulate import tabulate 
 reservadas = {
     # Controle de Fluxo
     'if'    :   'IF', 
@@ -46,25 +45,25 @@ reservadas = {
 
     # Blocos e Outros
     'begin' : 'BEGIN', 
-    'end'   : 'END', 
+    'end'   : 'END',
     'select'    : 'SELECT',
 
     # Tipos de Dados
-    'int'   :   'INT',
-    'int8'  :   'INT8',
-    'int16' :   'INT16',
-    'int32' :   'INT32',
-    'int64' :   'INT64',
-    'int128'    :   'INT128',
-    'uint8' :   'UINT8',
-    'uint16'    :   'UINT16',
-    'uint32'    :   'UINT32',
-    'uint64'    :   'UINT64',
-    'uint128'   :   'UINT128',
-    'float' :   'FLOAT',
-    'float32'   :   'FLOAT32',
-    'float64'   :   'FLOAT64',
-    'bool'  :   'BOOL'
+    'Int'   :   'INT',
+    'Int8'  :   'INT8',
+    'Int16' :   'INT16',
+    'Int32' :   'INT32',
+    'Int64' :   'INT64',
+    'Int128'    :   'INT128',
+    'UInt8' :   'UINT8',
+    'UInt16'    :   'UINT16',
+    'UInt32'    :   'UINT32',
+    'UInt64'    :   'UINT64',
+    'UInt128'   :   'UINT128',
+    'Float' :   'FLOAT',
+    'Float32'   :   'FLOAT32',
+    'Float64'   :   'FLOAT64',
+    'Bool'  :   'BOOL'
 }
 
 tokens = [
@@ -72,7 +71,7 @@ tokens = [
     'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 
     'SAFE_CALL', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE','COMMA', 'SEMICOLON', 'COLON', 'ASSOCIACAO', 'AT', 'DOLAR_SIGN', 'QMARK', 'DOTDOT' , 'DOTDOTDOT',
     'INTNUMBER', 'HEXNUMBER', 'BINNUMBER', 'OCTNUMBER', 'FLOATNUMBER' ,'NEWLINE', 'CONSTANT', 'GLOBALVAR', 'INSTANCEVAR', 'CLASSVAR','LOOP', 'EACH', 'PIPE', 'POTENCIACAO_ASSIGN', 'OR_ASSIGN', 'TCOLON', 'SHIFT_LEFT', 'SHIFT_RIGHT',
-    'EXCLAMATION', 'TILDE', 'LITERAL', 'UNDERSCORE', 'ASTERISK'
+    'EXCLAMATION', 'TILDE', 'LITERAL', 'UNDERSCORE', 'ASTERISK' , 'INTERP_START' , 'INTERP_END'
 ] + list(reservadas.values())
 
 
@@ -159,6 +158,13 @@ def t_STRING(t):
     r'\"([^\\\n]|\\.)*?\"'
     return t
 
+def t_INTERP_START(t):
+    r'\#\{'
+    return t
+
+def t_INTERP_END(t):
+    r'\}'
+
 def t_CHAR(t):
     r"'([^'\\]|\\.)'"
     t.value = t.value[1:-1]
@@ -226,7 +232,7 @@ end
 
 x, y = 1, 2
 a, b, c = [1, 2, 3]
-
+i -= 1
 }
 """
 lexer.input(entrada)
