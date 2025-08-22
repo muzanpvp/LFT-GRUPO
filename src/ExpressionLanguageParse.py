@@ -129,8 +129,8 @@ def p_literal(p):
                 |   TRUE
                 |   FALSE'''
 
-def p_function_call(p):
-    '''function_call    :   ID LPAREN expression_list RPAREN'''
+#def p_function_call(p):
+ #   '''function_call    :   ID LPAREN expression_list RPAREN'''
 #|   ID LPAREN RPAREN tirei isso, pois expression_list vai para empty, iria so duas regras para o mesmo lugar, e o empty do expression_list serve para cuidar de arryas[] 
 
 def p_opt_expression_list(p):
