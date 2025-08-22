@@ -4,6 +4,7 @@ from ExpressionLanguageLex import *
 
 
 #Onde tiver empty, na chamada pai, colocar um caso base com ele mesmo e tirar o empty.
+# 
 #Eliminar regras relacionadas a classes, foreach
 #Trabalhar so com 32bits: inteiro
 #na execução, verificar o parser.out no final para ver os conflitos, em quais estados e com quais expressões.
@@ -67,8 +68,8 @@ def p_module(p):
 
 #-----------------------------FUNCTIONS-----------------------------
 def p_function_list(p):
-    '''function_list    :   function function_list
-                        |   function'''
+    '''function_list    :   function 
+                        |   function function_list'''
 
 def p_function(p):
     '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements_block END
@@ -129,8 +130,8 @@ def p_literal(p):
                 |   FALSE'''
 
 def p_function_call(p):
-    '''function_call    :   ID LPAREN expression_list RPAREN
-                        |   ID LPAREN RPAREN'''
+    '''function_call    :   ID LPAREN expression_list RPAREN'''
+#|   ID LPAREN RPAREN tirei isso, pois expression_list vai para empty, iria so duas regras para o mesmo lugar, e o empty do expression_list serve para cuidar de arryas[] 
 
 def p_opt_expression_list(p):
     '''opt_expression_list  :   expression_list
@@ -199,7 +200,7 @@ def p_relational_expression(p):
 def p_additive_expression(p):
     '''additive_expression  :   multiplicative_expression
                             |   additive_expression PLUS multiplicative_expression
-                            |   additive_expression MINUS multiplicative_expression'''
+                            |   additive_expression MINUS multiplicative_expression '''
 
 
 def p_multiplicative_expression(p):
@@ -237,7 +238,6 @@ def p_primary_expression(p):
     '''primary_expression   :   expression_between_parentesis
                             |   array_literal
                             |   literal
-                            |   function_call
                             |   ID'''
 
 def p_expression_between_parentesis(p):
@@ -342,7 +342,7 @@ def p_error(p):
 lexer = lex.lex()
 parser = yacc.yacc()
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     data = """
     x, y, z = 1, 2, 3
     
