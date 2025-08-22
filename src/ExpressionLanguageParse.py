@@ -2,6 +2,13 @@ import ply.lex as lex
 import ply.yacc as yacc
 from ExpressionLanguageLex import *
 
+
+#Onde tiver empty, na chamada pai, colocar um caso base com ele mesmo e tirar o empty.
+#Eliminar regras relacionadas a classes, foreach
+#Trabalhar so com 32bits: inteiro
+#na execução, verificar o parser.out no final para ver os conflitos, em quais estados e com quais expressões.
+
+
 precedence = (
     ('right', 'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN',
      'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN'),
@@ -58,12 +65,14 @@ def p_module_list(p):
 def p_module(p):
     '''module   :   MODULE ID NEWLINE statements END'''
 
+#-----------------------------FUNCTIONS-----------------------------
 def p_function_list(p):
     '''function_list    :   function function_list
                         |   function'''
 
 def p_function(p):
-    '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements_block END'''
+    '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements_block END
+                |   DEF ID opt_return_type NEWLINE statements_block END'''
 
 def p_opt_argument_list(p):
     '''opt_argument_list    :   argument_list
@@ -114,13 +123,14 @@ def p_boolean(p):
 def p_literal(p):
     '''literal  :   INTNUMBER
                 |   FLOATNUMBER
-                |   STRING
+                |   string_literal
                 |   CHAR
                 |   TRUE
                 |   FALSE'''
 
 def p_function_call(p):
-    '''function_call    :   ID LPAREN opt_expression_list RPAREN'''
+    '''function_call    :   ID LPAREN expression_list RPAREN
+                        |   ID LPAREN RPAREN'''
 
 def p_opt_expression_list(p):
     '''opt_expression_list  :   expression_list
@@ -128,8 +138,8 @@ def p_opt_expression_list(p):
 
 def p_expression_list(p):
     '''expression_list  :   expression
-                        |   expression COMMA expression_list'''
-    
+                        |   expression_list COMMA expression'''
+#-----------------------------VARIABLES-----------------------------   
 def p_variable_declaration(p):
     '''variable_declaration :   ID types ASSIGN expression
                             |   ID ASSIGN expression
@@ -143,7 +153,7 @@ def p_list_of_values(p):
     '''list_of_values   :   expression
                         |   expression COMMA list_of_values'''
 
-
+#-----------------------------EXPRESSION HIERARCHY-----------------------------
 def p_expression(p):
     '''expression   :   ternary_expression
                     |   assignment_expression'''
@@ -209,12 +219,14 @@ def p_unary_expression(p):
                         |   TILDE unary_expression
                         |   postfix_expression'''
 
+#-----------------------------POSTFIX (calls / index)-----------------------------
+
 def p_postfix_expression(p):
     '''postfix_expression   :   primary_expression postfix_suffixes'''
 
 def p_postfix_suffixes(p):
     '''postfix_suffixes :   postfix_suffix postfix_suffixes
-                        |   empty'''
+                        |   postfix_suffix'''  #caso base substituir por postfix_suffix
 #Falta a range_expression
 def p_postfix_suffix(p):
     '''postfix_suffix   :   LBRACKET expression RBRACKET
@@ -222,14 +234,20 @@ def p_postfix_suffix(p):
                         |   DOTDOTDOT primary_expression'''
 
 def p_primary_expression(p):
-    '''primary_expression   :   LPAREN expression RPAREN
+    '''primary_expression   :   expression_between_parentesis
                             |   array_literal
                             |   literal
                             |   function_call
                             |   ID'''
 
+def p_expression_between_parentesis(p):
+    ''' expression_between_parentesis : LPAREN expression RPAREN'''
 def p_array_literal(p):
     '''array_literal    :   LBRACKET opt_expression_list RBRACKET'''
+def p_string_literal(p):
+    '''string_literal : STRING
+                      | STRING INTERP_START expression INTERP_END string_literal'''
+#-----------------------------STATEMENTS / CONTROL-----------------------------
 
 def p_statements(p):
     '''statements   :   statement
@@ -239,7 +257,7 @@ def p_statement(p):
     '''statement    :   expression
                     |   control_structure
                     |   variable_declaration'''
-    
+#expression
 def p_control_structure(p):
     '''control_structure    :   conditional
                             |   loop_structure
@@ -324,7 +342,7 @@ def p_error(p):
 lexer = lex.lex()
 parser = yacc.yacc()
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     data = """
     x, y, z = 1, 2, 3
     
