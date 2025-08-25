@@ -11,20 +11,12 @@ from ExpressionLanguageLex import *
 
 
 precedence = (
-    ('right', 'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN',
-     'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN'),
-    ('right', 'QMARK', 'TCOLON'),
-    ('left', 'OR'),
-    ('left', 'AND'),
-    ('nonassoc', 'EQUAL', 'NOT_EQUAL', 'TIPO_EQUAL'),
-    ('nonassoc', 'GREATER_THAN', 'LESS_THAN', 'GREATER_EQUAL', 'LESS_EQUAL'),
+    ('nonassoc', 'LESS_THAN', 'LESS_EQUAL', 'GREATER_THAN', 'GREATER_EQUAL'),
+    ('left', 'EQUAL', 'NOT_EQUAL', 'TIPO_EQUAL'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MULTI', 'DIVIDE', 'MODULO'),
     ('right', 'POTENCIACAO'),
-    ('right', 'UMINUS', 'UPLUS', 'EXCLAMATION', 'TILDE'),
-    ('nonassoc', 'DOTDOT', 'DOTDOTDOT'),
-    ('left', 'DOT'),
-    ('left', 'LBRACKET', 'RBRACKET'),
+    ('right', 'UMINUS', 'UPLUS', 'NOT', 'TILDE'),
 )
 
 #---------------------------------------------PROGRAM--------------------------------------------------------------
@@ -64,7 +56,7 @@ def p_module_list(p):
                     |   module'''
 
 def p_module(p):
-    '''module   :   MODULE ID NEWLINE statements END'''
+    '''module   :   MODULE ID statements END'''
 
 #-----------------------------FUNCTIONS-----------------------------
 def p_function_list(p):
@@ -72,8 +64,8 @@ def p_function_list(p):
                         |   function function_list'''
 
 def p_function(p):
-    '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements_block END
-                |   DEF ID opt_return_type NEWLINE statements_block END'''
+    '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements END
+                |   DEF ID opt_return_type NEWLINE statements END'''
 
 def p_opt_argument_list(p):
     '''opt_argument_list    :   argument_list
@@ -129,17 +121,7 @@ def p_literal(p):
                 |   TRUE
                 |   FALSE'''
 
-#def p_function_call(p):
- #   '''function_call    :   ID LPAREN expression_list RPAREN'''
-#|   ID LPAREN RPAREN tirei isso, pois expression_list vai para empty, iria so duas regras para o mesmo lugar, e o empty do expression_list serve para cuidar de arryas[] 
 
-def p_opt_expression_list(p):
-    '''opt_expression_list  :   expression_list
-                            |   empty'''
-
-def p_expression_list(p):
-    '''expression_list  :   expression
-                        |   expression_list COMMA expression'''
 #-----------------------------VARIABLES-----------------------------   
 def p_variable_declaration(p):
     '''variable_declaration :   ID types ASSIGN expression
@@ -153,6 +135,112 @@ def p_list_of_identifiers(p):
 def p_list_of_values(p):
     '''list_of_values   :   expression
                         |   expression COMMA list_of_values'''
+    
+#pergunte se precisa colocar variable_assignmet, seria a alteracao do valor de uma variavel ja criada, tipo atribuindo outro valor
+
+#----------------------------FunctionCall-------------------------------------
+def p_function_call(p):
+    '''function_call    :   ID LPAREN expression_list RPAREN
+                        |   ID LPAREN RPAREN'''
+
+def p_opt_expression_list(p):
+    '''opt_expression_list  :   expression_list
+                            |   empty'''
+
+def p_expression_list(p):
+    '''expression_list  :   expression
+                        |   expression_list COMMA expression'''
+    
+#-----------------------------STATEMENTS / CONTROL-----------------------------
+#OBSERVAR PORQUE SE TIRAR ESSE NEWLINE DA MERDA
+def p_statements(p):
+    '''statements   :   statement
+                    |   statement NEWLINE statements'''
+
+def p_statement(p):
+    '''statement    :   expression
+                    |   control_structure
+                    |   variable_declaration
+                    |   function_call'''
+    
+def p_control_structure(p):
+    '''control_structure    :   conditional
+                            |   loop_structure
+                            |   case_structure
+                            |   return_statement
+                            |   break_statement
+                            |   next_statement'''
+
+def p_conditional(p):
+    '''conditional  :   if_statement
+                    |   unless_statement'''
+
+
+def p_if_statement(p):
+    '''if_statement : IF if_condition statements opt_elsif opt_else END'''
+
+def p_unless_statement(p):
+    '''unless_statement : UNLESS if_condition statements opt_else END'''
+
+def p_if_condition(p):
+    '''if_condition : expression
+                    | expression LBRACE statements RBRACE'''
+
+def p_opt_elsif(p):
+    '''opt_elsif : elsif_list
+                 | empty'''
+
+def p_elsif_list(p):
+    '''elsif_list : elsif_list elsif
+                  | elsif'''
+
+def p_elsif(p):
+    '''elsif : ELSIF if_condition statements'''
+
+def p_opt_else(p):
+    '''opt_else : ELSE statements
+                | empty'''
+
+def p_loop_structure(p):
+    '''loop_structure   :   while
+                        |   until
+                        |   loop
+                        |   iterator'''
+
+def p_while(p):
+    '''while    :   WHILE expression statements'''
+
+def p_until(p):
+    '''until    :   UNTIL expression statements'''
+
+def p_loop(p):
+    '''loop :   LOOP statements'''
+
+#tem que adicionar o foreach
+def p_iterator(p):
+    '''iterator :   expression DOT MULTI statements
+                |   expression DOT EACH DO PIPE ID PIPE statements END
+                |   expression DOT EACH LBRACE PIPE ID PIPE RBRACE statements'''
+
+def p_case_structure(p):
+    '''case_structure   :   CASE expression when_list opt_else END'''
+
+def p_when_list(p):
+    '''when_list    :   WHEN expression statements
+                    |   when_list WHEN expression statements'''
+
+def p_return_statement(p):
+    '''return_statement :   RETURN opt_expression'''
+
+def p_break_statement(p):
+    '''break_statement  :   BREAK opt_expression'''
+
+def p_next_statement(p):
+    '''next_statement   :   NEXT opt_expression'''
+
+def p_opt_expression(p):
+    '''opt_expression   :   expression
+                        |   empty'''
 
 #-----------------------------EXPRESSION HIERARCHY-----------------------------
 def p_expression(p):
@@ -189,7 +277,8 @@ def p_equality_expression(p):
                             |   equality_expression EQUAL relational_expression
                             |   equality_expression NOT_EQUAL relational_expression
                             |   equality_expression TIPO_EQUAL relational_expression'''
-   
+#ELE NAO CONSEGUE DECIDIR A ORDEM SE A EXPRESSAO FOR x > 5 + 3 , ELE NÃO SABE PARA QUAL PRECEDENCIA É A PROXIMA
+#TENTEI USAR PRECEDENCE E NADA , FORA QUE TEM A PROPRIA HIERAQUIA NO CODIGO, UM CHAMA O PROXIMO EM ORDEM DE HIERARQUIA
 def p_relational_expression(p):
     '''relational_expression    :   additive_expression
                                 |   relational_expression GREATER_THAN additive_expression
@@ -221,6 +310,12 @@ def p_unary_expression(p):
                         |   postfix_expression'''
 
 #-----------------------------POSTFIX (calls / index)-----------------------------
+def p_primary_expression(p):
+    '''primary_expression   :   expression_between_parentesis
+                            |   array_literal
+                            |   literal
+                            |   ID'''
+    
 
 def p_postfix_expression(p):
     '''postfix_expression   :   primary_expression postfix_suffixes'''
@@ -233,100 +328,18 @@ def p_postfix_suffix(p):
     '''postfix_suffix   :   LBRACKET expression RBRACKET
                         |   DOTDOT primary_expression
                         |   DOTDOTDOT primary_expression'''
-
-def p_primary_expression(p):
-    '''primary_expression   :   expression_between_parentesis
-                            |   array_literal
-                            |   literal
-                            |   ID'''
+    
 
 def p_expression_between_parentesis(p):
     ''' expression_between_parentesis : LPAREN expression RPAREN'''
+
 def p_array_literal(p):
     '''array_literal    :   LBRACKET opt_expression_list RBRACKET'''
+    
 def p_string_literal(p):
     '''string_literal : STRING
                       | STRING INTERP_START expression INTERP_END string_literal'''
-#-----------------------------STATEMENTS / CONTROL-----------------------------
 
-def p_statements(p):
-    '''statements   :   statement
-                    |   statement NEWLINE statements'''
-
-def p_statement(p):
-    '''statement    :   expression
-                    |   control_structure
-                    |   variable_declaration'''
-#expression
-def p_control_structure(p):
-    '''control_structure    :   conditional
-                            |   loop_structure
-                            |   case_structure
-                            |   return_statement
-                            |   break_statement
-                            |   next_statement'''
-
-def p_conditional(p):
-    '''conditional  :   if_statement
-                    |   unless_statement'''
-
-def p_if_statement(p):
-    '''if_statement :   IF expression statements_block opt_elsif opt_else END'''
-
-def p_unless_statement(p):
-    '''unless_statement :   UNLESS expression statements_block opt_else END'''
-
-def p_opt_elsif(p):
-    '''opt_elsif    :   ELSIF expression statements_block opt_elsif
-                    | empty'''
-
-def p_opt_else(p):
-    '''opt_else :   ELSE statements_block
-                |   empty'''
-
-def p_loop_structure(p):
-    '''loop_structure   :   while
-                        |   until
-                        |   loop
-                        |   iterator'''
-
-def p_while(p):
-    '''while    :   WHILE expression statements_block'''
-
-def p_until(p):
-    '''until    :   UNTIL expression statements_block'''
-
-def p_loop(p):
-    '''loop :   LOOP statements_block'''
-
-#tem que adicionar o foreach
-def p_iterator(p):
-    '''iterator :   expression DOT MULTI statements_block
-                |   expression DOT EACH DO PIPE ID PIPE statements_block END
-                |   expression DOT EACH LBRACE PIPE ID PIPE RBRACE statements_block'''
-
-def p_case_structure(p):
-    '''case_structure   :   CASE expression when_list opt_else END'''
-
-def p_when_list(p):
-    '''when_list    :   WHEN expression statements_block
-                    |   when_list WHEN expression statements_block'''
-
-def p_return_statement(p):
-    '''return_statement :   RETURN opt_expression'''
-
-def p_break_statement(p):
-    '''break_statement  :   BREAK opt_expression'''
-
-def p_next_statement(p):
-    '''next_statement   :   NEXT opt_expression'''
-
-def p_opt_expression(p):
-    '''opt_expression   :   expression
-                        |   empty'''
-
-def p_statements_block(p):
-    '''statements_block :   statements'''
 #----------------------------------------------------NONE----------------------------------------------------------
 def p_empty(p):
     'empty :'
