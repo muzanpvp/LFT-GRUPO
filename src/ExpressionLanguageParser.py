@@ -344,8 +344,8 @@ def p_assignment_expression(p):
                                 |   assignment_target DIVIDE_ASSIGN expression
                                 |   ternary_expression'''
 
-def p_assignment_target(p):
-    '''assignment_target    :   ID 
+def p_assignment_target(p): 
+    '''assignment_target    :   ID
                             |   ID LBRACKET expression RBRACKET 
                             |   UNDERSCORE
                             |   ASTERISK assignment_target'''
@@ -383,8 +383,8 @@ def p_relational_expression(p):
 
 def p_additive_expression(p):
     '''additive_expression  :   multiplicative_expression
-                            |   additive_expression PLUS multiplicative_expression
-                            |   additive_expression MINUS multiplicative_expression '''
+                            |   multiplicative_expression PLUS additive_expression
+                            |   multiplicative_expression MINUS additive_expression '''
 
 def p_multiplicative_expression(p):
     '''multiplicative_expression    :   potenciacao_expression
@@ -407,7 +407,8 @@ def p_unary_expression(p):
 def p_primary_expression(p):
     '''primary_expression   :   LPAREN expression RPAREN
                             |   array_literal
-                            |   literal'''
+                            |   literal
+                            |   ID'''
 
 def p_array_literal(p):
     '''array_literal    :   LBRACKET opt_expression_list RBRACKET'''
