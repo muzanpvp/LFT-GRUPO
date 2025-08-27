@@ -1,10 +1,13 @@
 import ply.lex as lex
 import ply.yacc as yacc
 from ExpressionLanguageLex import *
+import AbstractSyntax as sa
 
 
 #Onde tiver empty, na chamada pai, colocar um caso base com ele mesmo e tirar o empty.
-
+# 
+#Eliminar regras relacionadas a classes, foreach
+#Trabalhar so com 32bits: inteiro
 #na execução, verificar o parser.out no final para ver os conflitos, em quais estados e com quais expressões.
 
 
@@ -14,7 +17,7 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MULTI', 'DIVIDE', 'MODULO'),
     ('right', 'POTENCIACAO'),
-    ('right', 'NOT', 'TILDE'),
+    ('right', 'UMINUS', 'UPLUS', 'NOT', 'TILDE'),
 )
 
 #---------------------------------------------PROGRAM--------------------------------------------------------------
@@ -34,53 +37,140 @@ def p_program(p):
                 |   constant_list
                 |   module_list
                 |   function_list'''
+    
+    require_list = None
+    constant_list = None
+    module_list = None
+    function_list = None
+
+    for item in p[1:]:
+        if item is None:
+            continue
+        if isinstance(item, list) and item:  # lista não vazia
+            first_elem = item[0]
+            if isinstance(first_elem, sa.Constant):
+                constant_list = item
+            elif isinstance(first_elem, sa.Module):
+                module_list = item
+            elif isinstance(first_elem, (sa.CompoundFunction, sa.CompoundFunctionNoParams)):
+                function_list = item
+            else:
+                require_list = item
+        else:
+            # item único
+            # Aqui você pode tentar identificar o tipo, ou assumir que seja require_list
+            require_list = [item]  # ou ajustar conforme o tipo real
+
+    # Substituir None por listas vazias para evitar erros posteriores
+    require_list = require_list or []
+    constant_list = constant_list or []
+    module_list = module_list or []
+    function_list = function_list or []
+
+    p[0] = sa.Program(
+        require_list=require_list,
+        constant_list=constant_list,
+        module_list=module_list,
+        function_list=function_list
+    )
+
+#---------------------------------------------REQUIRE---------------------------------------------
 
 def p_require_list(p):
     '''require_list :   require require_list
                     |   require'''
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
 
 def p_require(p):
     '''require  :   REQUIRE STRING'''
+    p[0] = p[2]
 
+#---------------------------------------------CONSTANTS---------------------------------------------
 def p_constant_list(p):
     '''constant_list    :   constant constant_list
                         |   constant'''
     
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
+    
 def p_constant(p):
     '''constant :   CONSTANT ASSIGN expression'''
-    
+    p[0] = sa.Constant(name=None, expr=p[3])
+
+#---------------------------------------------MODULES---------------------------------------------
+
 def p_module_list(p):
     '''module_list  :   module module_list
                     |   module'''
+    
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
 
 def p_module(p):
     '''module   :   MODULE ID statements END'''
+    p[0] = sa.Module(name=p[2], statements=p[3])
 
 #-----------------------------FUNCTIONS-----------------------------
 def p_function_list(p):
     '''function_list    :   function 
                         |   function function_list'''
 
+    if len(p) == 3:
+        p[0] = [p[1]] + p[2]
+    else:
+        p[0] = [p[1]]
+
 def p_function(p):
     '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements END
-                |   DEF ID opt_return_type NEWLINE statements  END'''
+                |   DEF ID opt_return_type NEWLINE statements END'''
+
+    if len(p) == 8:
+        p[0] = sa.CompoundFunction(name=p[2], parameters=p[4], statements=p[6])
+    else:
+        p[0] = sa.CompoundFunctionNoParams(name=p[2], statements=p[5])
 
 def p_opt_argument_list(p):
     '''opt_argument_list    :   argument_list
                             |   empty'''
+    p[0] = p[1] if p[1] is not None else []
+
 def p_argument_list(p):
     '''argument_list    :   argument
                         |   argument COMMA argument_list'''
+    
+    if len(p) == 3:
+        p[0] = [p[1]] + p[3]
+    else:
+        p[0] = [p[1]]
 
 def p_argument(p):
     '''argument :   ID
                 |   ID COLON types
                 |   ID ASSIGN expression
                 |   ID COLON types ASSIGN expression'''
+    
+    if len(p) == 2:
+        p[0] = sa.Variable(name=p[1])
+    elif len(p) == 4 and p[2] == ':':
+        p[0] = sa.Variable(name=p[1], type_=p[3])
+    elif len(p) == 4 and p[2] == '=':
+        p[0] = sa.Variable(name=p[1], value=p[3])
+    else:
+        p[0] = sa.Variable(name=p[1], type_=p[3], value=p[5])
 
 def p_opt_return_type(p):
     '''opt_return_type  :   COLON types
                         |   empty'''
+    p[0] = p[2] if len(p) > 2 else None
+
+#---------------------------------------------VARIABLES---------------------------------------------
 
 def p_types(p):
     '''types    :   STRING
@@ -119,10 +209,13 @@ def p_literal(p):
                 |   TRUE
                 |   FALSE'''
 
+def p_string_literal(p):
+    '''string_literal   :   STRING
+                        |   STRING INTERP_START expression INTERP_END string_literal'''
 
 #-----------------------------VARIABLES-----------------------------   
 def p_variable_declaration(p):
-    '''variable_declaration :   ID types ASSIGN expression
+    '''variable_declaration :   ID COLON types ASSIGN expression
                             |   ID ASSIGN expression
                             |   ID COMMA list_of_identifiers ASSIGN expression COMMA list_of_values'''
 
@@ -161,7 +254,6 @@ def p_statements_list(p):
 def p_statements_base(p):
     '''statements_base   :   statement NEWLINE
                          |   statement SEMICOLON'''
-
 def p_statement(p):
     '''statement    :   expression
                     |   control_structure
@@ -179,7 +271,6 @@ def p_control_structure(p):
 def p_conditional(p):
     '''conditional  :   if_statement
                     |   unless_statement'''
-
 
 def p_if_statement(p):
     '''if_statement : IF if_condition statements opt_elsif opt_else END'''
@@ -221,7 +312,7 @@ def p_until(p):
 def p_loop(p):
     '''loop :   LOOP statements'''
 
-#tem que adicionar o foreach
+#Acho que o foreach já esta adicionado aqui!
 def p_iterator(p):
     '''iterator :   expression DOT MULTI statements
                 |   expression DOT EACH DO PIPE ID PIPE statements END
@@ -249,25 +340,30 @@ def p_opt_expression(p):
 
 #-----------------------------EXPRESSION HIERARCHY-----------------------------
 def p_expression(p):
-    '''expression   :   ternary_expression
-                    |   assignment_expression'''
-    p[0] = p[1]
+    '''expression   :   assignment_expression'''
 
 def p_assignment_expression(p):
     '''assignment_expression    :   assignment_target ASSIGN expression
                                 |   assignment_target PLUS_ASSIGN expression
                                 |   assignment_target MINUS_ASSIGN expression
                                 |   assignment_target MULTI_ASSIGN expression
-                                |   assignment_target DIVIDE_ASSIGN expression'''
+                                |   assignment_target DIVIDE_ASSIGN expression
+                                |   ternary_expression'''
 
-def p_assignment_target(p):
-    '''assignment_target    :   postfix_expression
+def p_assignment_target(p): 
+    '''assignment_target    :   ID
+                            |   ID LBRACKET expression RBRACKET 
                             |   UNDERSCORE
                             |   ASTERISK assignment_target'''
 
 def p_ternary_expression(p):
-    '''ternary_expression   :   logical_or_expression QMARK expression TCOLON expression
-                            |   logical_or_expression'''
+    '''ternary_expression   :   range_expression QMARK expression TCOLON expression
+                            |   range_expression'''
+    
+def p_range_expression(p):
+    '''range_expression :   logical_or_expression DOTDOT logical_or_expression
+                        |   logical_or_expression DOTDOTDOT logical_or_expression
+                        |   logical_or_expression'''
 
 def p_logical_or_expression(p):
     '''logical_or_expression    :   logical_and_expression
@@ -296,7 +392,6 @@ def p_additive_expression(p):
                             |   additive_expression PLUS multiplicative_expression
                             |   additive_expression MINUS multiplicative_expression '''
 
-
 def p_multiplicative_expression(p):
     '''multiplicative_expression    :   potenciacao_expression
                                     |   multiplicative_expression MULTI potenciacao_expression
@@ -308,45 +403,22 @@ def p_potenciacao_expression(p):
                                 |   potenciacao_expression POTENCIACAO unary_expression'''
 
 def p_unary_expression(p):
-    '''unary_expression :   PLUSPLUS ID
-                        |   ID PLUSPLUS
-                        |   MINUSMINUS ID
-                        |   ID MINUSMINUS
+    '''unary_expression :   PLUS unary_expression %prec UPLUS
+                        |   MINUS unary_expression %prec UMINUS
                         |   EXCLAMATION unary_expression
                         |   TILDE unary_expression
-                        |   postfix_expression'''
+                        |   primary_expression'''
 
 #-----------------------------POSTFIX (calls / index)-----------------------------
 def p_primary_expression(p):
-    '''primary_expression   :   expression_between_parentesis
+    '''primary_expression   :   LPAREN expression RPAREN
                             |   array_literal
                             |   literal
                             |   ID'''
-    
-
-def p_postfix_expression(p):
-    '''postfix_expression   :   primary_expression postfix_suffixes'''
-
-def p_postfix_suffixes(p):
-    '''postfix_suffixes :   postfix_suffix postfix_suffixes
-                        |   postfix_suffix'''  #caso base substituir por postfix_suffix
-#Falta a range_expression
-def p_postfix_suffix(p):
-    '''postfix_suffix   :   LBRACKET expression RBRACKET
-                        |   DOTDOT primary_expression
-                        |   DOTDOTDOT primary_expression'''
-    
-
-def p_expression_between_parentesis(p):
-    ''' expression_between_parentesis : LPAREN expression RPAREN'''
 
 def p_array_literal(p):
     '''array_literal    :   LBRACKET opt_expression_list RBRACKET'''
     
-def p_string_literal(p):
-    '''string_literal : STRING
-                      | STRING INTERP_START expression INTERP_END string_literal'''
-
 #----------------------------------------------------NONE----------------------------------------------------------
 def p_empty(p):
     'empty :'
