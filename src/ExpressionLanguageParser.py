@@ -227,8 +227,6 @@ def p_list_of_values(p):
     '''list_of_values   :   expression
                         |   expression COMMA list_of_values'''
     
-#pergunte se precisa colocar variable_assignmet, seria a alteracao do valor de uma variavel ja criada, tipo atribuindo outro valor
-
 #----------------------------FunctionCall-------------------------------------
 def p_function_call(p):
     '''function_call    :   ID LPAREN expression_list RPAREN
@@ -349,10 +347,9 @@ def p_assignment_expression(p):
                                 |   assignment_target MULTI_ASSIGN expression
                                 |   assignment_target DIVIDE_ASSIGN expression
                                 |   ternary_expression'''
-
+             
 def p_assignment_target(p): 
     '''assignment_target    :   ID
-                            |   ID LBRACKET expression RBRACKET 
                             |   UNDERSCORE
                             |   ASTERISK assignment_target'''
 
@@ -378,8 +375,7 @@ def p_equality_expression(p):
                             |   equality_expression EQUAL relational_expression
                             |   equality_expression NOT_EQUAL relational_expression
                             |   equality_expression TIPO_EQUAL relational_expression'''
-#ELE NAO CONSEGUE DECIDIR A ORDEM SE A EXPRESSAO FOR x > 5 + 3 , ELE NÃO SABE PARA QUAL PRECEDENCIA É A PROXIMA
-#TENTEI USAR PRECEDENCE E NADA , FORA QUE TEM A PROPRIA HIERAQUIA NO CODIGO, UM CHAMA O PROXIMO EM ORDEM DE HIERARQUIA
+
 def p_relational_expression(p):
     '''relational_expression    :   additive_expression
                                 |   relational_expression GREATER_THAN additive_expression
@@ -410,6 +406,9 @@ def p_unary_expression(p):
                         |   primary_expression'''
 
 #-----------------------------POSTFIX (calls / index)-----------------------------
+# O SHIFT/REDUCE DO LBRACKET ESTA ESTOURANDO POR CAUSA DO ARRAY_LITERAL, QUE USA DA MESMA REGRA 
+# MAS O ARRAY_LITERAL É A DEFINIÇÃO DO ARRAY
+
 def p_primary_expression(p):
     '''primary_expression   :   LPAREN expression RPAREN
                             |   array_literal
