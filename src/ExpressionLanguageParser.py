@@ -4,12 +4,16 @@ from ExpressionLanguageLex import *
 import AbstractSyntax as sa
 
 
-#Onde tiver empty, na chamada pai, colocar um caso base com ele mesmo e tirar o empty.
-# 
+# Os problemas de shif/reduce relacionado aos terminal Plus e Minus da unary_expression, o qual descreve o uso de atribuição simples ao uma variavel, mas especificando
+# se o número é positivo ou negativo, como no exemplos a seguir : x = -5 ou x = +5
+# o proprio PLY resolve esse conflito por shift, e o sintático reconhece corretamente o token.
+
+# O sintatico não aceita esse exemplo : [0..5], ou uma [expression], ou aceita isso como array, pois o unico uso tirando os conceitos de classes, só funcionaria para o 
+#range expression.
+
+
 #Eliminar regras relacionadas a classes, foreach
 #Trabalhar so com 32bits: inteiro
-#na execução, verificar o parser.out no final para ver os conflitos, em quais estados e com quais expressões.
-
 
 precedence = (
     ('nonassoc', 'LESS_THAN', 'LESS_EQUAL', 'GREATER_THAN', 'GREATER_EQUAL'),
@@ -21,6 +25,7 @@ precedence = (
 )
 
 #---------------------------------------------PROGRAM--------------------------------------------------------------
+
 def p_program(p):
     '''program  :   require_list constant_list module_list function_list
                 |   require_list constant_list module_list
@@ -36,7 +41,8 @@ def p_program(p):
                 |   require_list
                 |   constant_list
                 |   module_list
-                |   function_list'''
+                |   function_list
+                |   statements'''
     
     require_list = None
     constant_list = None
@@ -241,7 +247,7 @@ def p_expression_list(p):
                         |   expression_list COMMA expression'''
     
 #-----------------------------STATEMENTS / CONTROL-----------------------------
-#OBSERVAR PORQUE SE TIRAR ESSE NEWLINE DA MERDA
+
 def p_statements(p):
     '''statements   :   statements_list '''
                     
@@ -252,6 +258,8 @@ def p_statements_list(p):
 def p_statements_base(p):
     '''statements_base   :   statement NEWLINE
                          |   statement SEMICOLON'''
+#criar ponto comum (filtro semantico)
+#expression e variable_declaration
 def p_statement(p):
     '''statement    :   expression
                     |   control_structure
@@ -406,8 +414,6 @@ def p_unary_expression(p):
                         |   primary_expression'''
 
 #-----------------------------POSTFIX (calls / index)-----------------------------
-# O SHIFT/REDUCE DO LBRACKET ESTA ESTOURANDO POR CAUSA DO ARRAY_LITERAL, QUE USA DA MESMA REGRA 
-# MAS O ARRAY_LITERAL É A DEFINIÇÃO DO ARRAY
 
 def p_primary_expression(p):
     '''primary_expression   :   LPAREN expression RPAREN
@@ -433,18 +439,11 @@ def p_error(p):
 lexer = lex.lex()
 parser = yacc.yacc()
 
-if __name__ == '_main_':
-    data = """
-    x, y, z = 1, 2, 3
-    
-    f = 6
-    g = true
-
-    if f == 5
-    # faz algo
-    elsif g == true
-        puts "po"
-    end
-    """
-    result = parser.parse(data, lexer=lexer)
-    print(result)
+data = """
+def X
+x = +5 + 3 + 1
+z : Int8 = 5
+end
+"""
+result = parser.parse(data, lexer=lexer, debug = True)
+print(result)
