@@ -220,8 +220,7 @@ def t_error(t):
 #Inicializacao
 lexer = lex.lex()
 
-entrada= """
-(0...5).each do |i|
+entrada= """(0...5).each do |i|
   puts "Número: #{i}"
 end
 
