@@ -1,7 +1,7 @@
 import ply.lex as lex
 import ply.yacc as yacc
 from ExpressionLanguageLex import *
-import AbstractSyntax as sa
+#import AbstractSyntax as sa
 
 
 # Os problemas de shif/reduce relacionado aos terminal Plus e Minus da unary_expression, o qual descreve o uso de atribuição simples ao uma variavel, mas especificando
@@ -43,70 +43,25 @@ def p_program(p):
                 |   module_list
                 |   function_list
                 |   statements'''
-    
-    require_list = None
-    constant_list = None
-    module_list = None
-    function_list = None
 
-    for item in p[1:]:
-        if item is None:
-            continue
-        if isinstance(item, list) and item:  # lista não vazia
-            first_elem = item[0]
-            if isinstance(first_elem, sa.Constant):
-                constant_list = item
-            elif isinstance(first_elem, sa.Module):
-                module_list = item
-            elif isinstance(first_elem, (sa.CompoundFunction, sa.CompoundFunctionNoParams)):
-                function_list = item
-            else:
-                require_list = item
-        else:
-            # item único
-            # Aqui você pode tentar identificar o tipo, ou assumir que seja require_list
-            require_list = [item]  # ou ajustar conforme o tipo real
-
-    # Substituir None por listas vazias para evitar erros posteriores
-    require_list = require_list or []
-    constant_list = constant_list or []
-    module_list = module_list or []
-    function_list = function_list or []
-
-    p[0] = sa.Program(
-        require_list=require_list,
-        constant_list=constant_list,
-        module_list=module_list,
-        function_list=function_list
-    )
 
 #---------------------------------------------REQUIRE---------------------------------------------
 
 def p_require_list(p):
     '''require_list :   require require_list
                     |   require'''
-    if len(p) == 3:
-        p[0] = [p[1]] + p[2]
-    else:
-        p[0] = [p[1]]
-
+   
 def p_require(p):
     '''require  :   REQUIRE STRING'''
-    p[0] = p[2]
 
 #---------------------------------------------CONSTANTS---------------------------------------------
 def p_constant_list(p):
     '''constant_list    :   constant constant_list
                         |   constant'''
     
-    if len(p) == 3:
-        p[0] = [p[1]] + p[2]
-    else:
-        p[0] = [p[1]]
     
 def p_constant(p):
     '''constant :   CONSTANT ASSIGN expression'''
-    p[0] = sa.Constant(name=None, expr=p[3])
 
 #---------------------------------------------MODULES---------------------------------------------
 
@@ -114,47 +69,31 @@ def p_module_list(p):
     '''module_list  :   module module_list
                     |   module'''
     
-    if len(p) == 3:
-        p[0] = [p[1]] + p[2]
-    else:
-        p[0] = [p[1]]
 
 def p_module(p):
     '''module   :   MODULE ID statements END'''
-    p[0] = sa.Module(name=p[2], statements=p[3])
 
 #-----------------------------FUNCTIONS-----------------------------
 def p_function_list(p):
     '''function_list    :   function 
                         |   function function_list'''
 
-    if len(p) == 3:
-        p[0] = [p[1]] + p[2]
-    else:
-        p[0] = [p[1]]
-
+#Essa seria minha nova versão, mas aqui tem um shift/reduce de function com argument, so que o (colon types, serve para forcar o tipo da variavel)
+#ja o function serve para (def x )
 def p_function(p):
-    '''function :   DEF ID LPAREN opt_argument_list RPAREN opt_return_type statements END
-                |   DEF ID opt_return_type NEWLINE statements END'''
-
-    if len(p) == 8:
-        p[0] = sa.CompoundFunction(name=p[2], parameters=p[4], statements=p[6])
-    else:
-        p[0] = sa.CompoundFunctionNoParams(name=p[2], statements=p[5])
+    '''function :   DEF ID LPAREN opt_argument_list RPAREN statements END
+                |   DEF ID LPAREN opt_argument_list RPAREN COLON types statements END
+                |   DEF ID statements END
+                |   DEF ID COLON types statements END'''
 
 def p_opt_argument_list(p):
     '''opt_argument_list    :   argument_list
                             |   empty'''
-    p[0] = p[1] if p[1] is not None else []
 
 def p_argument_list(p):
     '''argument_list    :   argument
                         |   argument COMMA argument_list'''
     
-    if len(p) == 3:
-        p[0] = [p[1]] + p[3]
-    else:
-        p[0] = [p[1]]
 
 def p_argument(p):
     '''argument :   ID
@@ -162,19 +101,7 @@ def p_argument(p):
                 |   ID ASSIGN expression
                 |   ID COLON types ASSIGN expression'''
     
-    if len(p) == 2:
-        p[0] = sa.Variable(name=p[1])
-    elif len(p) == 4 and p[2] == ':':
-        p[0] = sa.Variable(name=p[1], type_=p[3])
-    elif len(p) == 4 and p[2] == '=':
-        p[0] = sa.Variable(name=p[1], value=p[3])
-    else:
-        p[0] = sa.Variable(name=p[1], type_=p[3], value=p[5])
 
-def p_opt_return_type(p):
-    '''opt_return_type  :   COLON types
-                        |   empty'''
-    p[0] = p[2] if len(p) > 2 else None
 
 #---------------------------------------------VARIABLES---------------------------------------------
 
@@ -210,14 +137,11 @@ def p_boolean(p):
 def p_literal(p):
     '''literal  :   INTNUMBER
                 |   FLOATNUMBER
-                |   string_literal
+                |   STRING
                 |   CHAR
                 |   TRUE
                 |   FALSE'''
 
-def p_string_literal(p):
-    '''string_literal   :   STRING
-                        |   STRING INTERP_START expression INTERP_END string_literal'''
 
 #-----------------------------VARIABLES-----------------------------   
 def p_variable_declaration(p):
@@ -256,8 +180,7 @@ def p_statements_list(p):
                         |   empty '''
     
 def p_statements_base(p):
-    '''statements_base   :   statement NEWLINE
-                         |   statement SEMICOLON'''
+    '''statements_base      statement SEMICOLON'''
 #criar ponto comum (filtro semantico)
 #expression e variable_declaration
 def p_statement(p):

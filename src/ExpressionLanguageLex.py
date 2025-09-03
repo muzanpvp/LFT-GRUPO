@@ -63,14 +63,15 @@ reservadas = {
     'Float' :   'FLOAT',
     'Float32'   :   'FLOAT32',
     'Float64'   :   'FLOAT64',
-    'Bool'  :   'BOOL'
+    'Bool'  :   'BOOL',
+    'loop'  :   'LOOP'
 }
 
 tokens = [
     'ID', 'STRING', 'CHAR', 'SYMBOL', 'VAR_GLOBAL', 'CLASS_VAR', 'INSTANCE_VAR', 'POTENCIACAO' , 'PLUS_ASSIGN', 'MINUS_ASSIGN', 'MULTI_ASSIGN', 'DIVIDE_ASSIGN', 'MODULO_ASSIGN',
     'PLUS', 'MINUS', 'MULTI', 'DIVIDE', 'MODULO', 'ASSIGN', 'TIPO_EQUAL', 'EQUAL', 'NOT_EQUAL', 'LESS_EQUAL', 'GREATER_EQUAL', 'LESS_THAN', 'GREATER_THAN', 'AND', 'OR', 'NOT', 
     'SAFE_CALL', 'DOT', 'SCOPE', 'PASSA_ARGUMENTO', 'DEFINE_BLOCO', 'LPAREN', 'RPAREN', 'LBRACKET', 'RBRACKET', 'LBRACE', 'RBRACE','COMMA', 'SEMICOLON', 'COLON', 'AT', 'DOLAR_SIGN', 'QMARK', 'DOTDOT' , 'DOTDOTDOT',
-    'INTNUMBER', 'HEXNUMBER', 'BINNUMBER', 'OCTNUMBER', 'FLOATNUMBER' ,'NEWLINE', 'CONSTANT', 'GLOBALVAR', 'INSTANCEVAR', 'CLASSVAR','LOOP', 'EACH', 'PIPE', 'POTENCIACAO_ASSIGN', 'OR_ASSIGN', 'TCOLON', 'SHIFT_LEFT', 'SHIFT_RIGHT',
+    'INTNUMBER', 'HEXNUMBER', 'BINNUMBER', 'OCTNUMBER', 'FLOATNUMBER' ,'NEWLINE', 'CONSTANT', 'GLOBALVAR', 'INSTANCEVAR', 'CLASSVAR', 'EACH', 'PIPE', 'POTENCIACAO_ASSIGN', 'OR_ASSIGN', 'TCOLON', 'SHIFT_LEFT', 'SHIFT_RIGHT',
     'EXCLAMATION', 'TILDE', 'LITERAL', 'UNDERSCORE', 'ASTERISK' , 'INTERP_START' , 'INTERP_END'
 ] + list(reservadas.values())
 
@@ -127,10 +128,6 @@ t_ASTERISK          = r'\*'
 
 
 
-def t_INTNUMBER(t):
-    r'[0-9_]+'
-    t.value = int(t.value.replace('_',''))
-    return t
 
 def t_FLOATNUMBER(t):
     r'([0-9]*\.[0-9]+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?|[0-9]+[eE][-+]?[0-9]+'
@@ -138,7 +135,12 @@ def t_FLOATNUMBER(t):
     t.value = float(t.value.replace('_',''))
     return t
 
-def t_BINNUMBER(t):
+def t_INTNUMBER(t):
+    r'[0-9_]+'
+    t.value = int(t.value.replace('_',''))
+    return t
+
+def t_BINNUMBER(t): 
     r'0b[01_]+'
     t.value = int(t.value.replace('_',''), 2)
     return t
@@ -211,7 +213,7 @@ def t_COMMENT_SINGLE_LINE(t):
 def t_NEWLINE(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-    return t
+
 
 def t_error(t):
     print(f"Caractere inválido '{t.value[0]}' na linha {t.lineno}")
@@ -220,7 +222,9 @@ def t_error(t):
 #Inicializacao
 lexer = lex.lex()
 
-entrada= """(0...5).each do |i|
+entrada= """
+r = -6.7
+(0...5).each do |i|
   puts "Número: #{i}"
 end
 
