@@ -1,17 +1,12 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 
-# =============================
-# Base Node
-# =============================
 
 class Node(metaclass=ABCMeta):
     @abstractmethod
     def accept(self, visitor):
         pass
 
-# =============================
-# Program Structure
-# =============================
 
 class Program(Node):
     def __init__(self, requires=None, constants=None, modules=None, functions=None, statements=None):
@@ -64,9 +59,8 @@ class CompoundFunctionNoParams(Node):
     def accept(self, visitor):
         return visitor.visitCompoundFunctionNoParams(self)
 
-# =============================
+
 # Statements
-# =============================
 
 class Statement(Node):
     pass
@@ -79,10 +73,10 @@ class ExpressionStatement(Statement):
         return visitor.visitExpressionStatement(self)
 
 class VariableDeclaration(Statement):
-    def __init__(self, name, type=None, value=None):
-        self.name = name
-        self.type = type
-        self.value = value
+    def __init__(self, name, type = None, value = None):
+        self.names = name or []
+        self.var_type = type
+        self.values = value or []
 
     def accept(self, visitor):
         return visitor.visitVariableDeclaration(self)
@@ -218,9 +212,7 @@ class ConditionWithBlock(Node):
     def accept(self, visitor):
         return visitor.visitConditionWithBlock(self)
 
-# =============================
 # Expressions
-# =============================
 
 class Expression(Node):
     pass
@@ -286,9 +278,7 @@ class TernaryIf(Expression):
     def accept(self, visitor):
         return visitor.visitTernaryIf(self)
 
-# =============================
 # Types
-# =============================
 
 class TypeName(Node):
     def __init__(self, name):
@@ -297,9 +287,7 @@ class TypeName(Node):
     def accept(self, visitor):
         return visitor.visitTypeName(self)
 
-# =============================
 # Literals
-# =============================
 
 class IntLiteral(Expression):
     def __init__(self, value):
